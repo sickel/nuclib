@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="wrap_content"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+	 	android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="horizontal">
+
+		<TextView
+			android:text="@string/energy"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:layout_width="70dp"
+			android:id="@+id/etEnergy"
+			android:ems="10"
+			android:inputType="numberDecimal"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="keV ±"/>
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:layout_width="50dp"
+			android:ems="10"
+			android:id="@+id/etUncert"
+			android:inputType="numberDecimal"
+			android:text="5"/>
+
+		<Spinner
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:entries="@array/saVartype"
+			android:id="@+id/SpUncerttype"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="center">
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:layout_width="70dp"
+			android:ems="10"
+			android:id="@+id/etFrom"
+			android:inputType="numberDecimal"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="-"
+			android:layout_gravity="center|center_vertical|center_horizontal"
+			android:textAlignment="center"/>
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:layout_width="70dp"
+			android:ems="10"
+			android:id="@+id/etTo"
+			android:inputType="numberDecimal"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="keV"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="min t½"/>
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:layout_width="50dp"
+			android:ems="10"
+			android:inputType="numberDecimal"
+			android:id="@+id/etThalf"/>
+
+		<Spinner
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:entries="@array/saHalflife"
+			android:id="@+id/spThalf"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal">
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:onClick="onClickSearch"
+			android:text="Search"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+
