@@ -23,14 +23,16 @@ import android.util.*;public class MainActivity extends Activity
     private static final int DB_VERSION = 1;
     private SQLiteDatabase dbNuclides;
 	public Double lowprobCutoff=0.01;
-    
+    public int energyround=1;
 	
 	// TODO: nuclide search
 	// TODO: make strings into resources
 	// TODO: better display of results
 	// TODO: more info on nuclides
 	// TODO: half life cut off
-	
+	// TODO: user settable low prob value
+	// TODO: user settable rounding
+	// TODO: user settable default uncertainty
 	
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -116,7 +118,7 @@ import android.util.*;public class MainActivity extends Activity
 					Data=Data+"\n\n";
 				}
 				Data =Data+Name+":";
-				String sql2 = "select energy,round(prob*100,1) as prob from line where nuclide='"+Name+"' ";
+				String sql2 = "select energy,round(prob*100,"+energyround+") as prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
 					sql2+=" and prob >="+lowprobCutoff;
 				}
