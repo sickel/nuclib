@@ -5,7 +5,7 @@ def open_file(sql):
     dbconn=sqlite3.connect('nuclides.db')
     with dbconn:
         cur = dbconn.cursor()
-    print "So far so good..."
+    print "\nTesting ", sql
     cur.execute(sql)
     rows=cur.fetchall()
     for row in rows:
