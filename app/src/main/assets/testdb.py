@@ -29,3 +29,6 @@ if __name__ == "__main__":
     open_file(sql)
     sql="select * from settings"
     open_file(sql)
+    sql="select * from nuclide where element='Cs'"
+    open_file(sql)
+    

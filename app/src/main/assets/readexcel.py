@@ -12,7 +12,7 @@ def open_file(path):
         cur.execute("drop table if exists settings")
         cur.execute("create table settings(key varchar not null,\
         value varchar not null)")
-        cur.execute("insert into settings (key,value) values(\"Version\" , \"1\") ")
+        cur.execute("insert into settings (key,value) values(\"Version\" , \"2\") ")
         cur.execute("drop table if exists line")
         cur.execute("drop table if exists lines")
         cur.execute("create table line(id integer primary key, \
@@ -22,7 +22,15 @@ def open_file(path):
         prob float not null,\
         probunc varchar,\
         comment varchar)")
-        
+        cur.execute("drop table if exists nuclide")
+        cur.execute("create table nuclide (id integer primary key, \
+        longname varchar not null,\
+        name varchar not null,\
+        Z integer not null,\
+        A integer not null,\
+        N integer not null,\
+        halflife float,\
+        element varchar not null)")
     # get the first worksheet
     sheet = book.sheet_by_index(0)
  
@@ -33,7 +41,23 @@ def open_file(path):
             data=sheet.row_values(row)
             if sheet.cell(row,0).value != '':
                 nuc=sheet.cell(row,0).value
+                longname=nuc
+                if( "/" in nuc):
+                   set=nuc.split("/")
+                   nuc=set[0]
                 print nuc
+                set=nuc.split('-')
+                Z=set[0]
+                A=set[2]
+                if(A[-1]=="m"):
+                   A=A[:-1]
+                N=int(A)-int(Z)
+                print set
+                print Z,A,N
+                name=set[1]+set[2]
+                print name
+                elem=set[1]
+                cur.execute("insert into nuclide (longname,name,A,Z,N,element) values(?,?,?,?,?,?)",[longname,name,A,Z,N,elem])
             else:
                 sheet.cell(row,0).value=nuc
                 data[0]=nuc
