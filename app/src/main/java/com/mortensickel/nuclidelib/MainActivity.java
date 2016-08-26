@@ -87,10 +87,9 @@ import android.util.*;public class MainActivity extends Activity
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
 		String sql="select distinct nuclide from line where energy >="+min+" and energy <="+max;
-		sql="select distinct nuclide from line";
-		sql="select count(*) from line";
-		
-		Toast.makeText(this, sql, Toast.LENGTH_LONG).show();
+		//sql="select distinct nuclide from line";
+		//sql="select count(*) from line";
+		//Toast.makeText(this, sql, Toast.LENGTH_LONG).show();
 		Cursor c = dbNuclides.rawQuery(sql, null);
 
 		int Column1 = c.getColumnIndex("nuclide");
@@ -98,11 +97,11 @@ import android.util.*;public class MainActivity extends Activity
 		String Data="";
 		// Check if our result was valid.
 		c.moveToFirst();
-		if (c != null) {
+		if (c != null && c.getCount()>0) {
 			// Loop through all Results
 			do {
 				String Name = c.getString(0);
-				Data =Data+"/";
+				Data =Data+"/"+Name;
 			}while(c.moveToNext());
 		}
 		Toast.makeText(this, Data, Toast.LENGTH_LONG).show();
