@@ -9,6 +9,10 @@ def open_file(path):
     dbconn=sqlite3.connect('nuclides.db')
     with dbconn:
         cur = dbconn.cursor()
+        cur.execute("drop table if exists settings")
+        cur.execute("create table settings(key varchar not null,\
+        value varchar not null)")
+        cur.execute("insert into settings (key,value) values(\"Version\" , \"1\") ")
         cur.execute("drop table if exists line")
         cur.execute("drop table if exists lines")
         cur.execute("create table line(id integer primary key, \
@@ -18,6 +22,7 @@ def open_file(path):
         prob float not null,\
         probunc varchar,\
         comment varchar)")
+        
     # get the first worksheet
     sheet = book.sheet_by_index(0)
  
@@ -34,6 +39,7 @@ def open_file(path):
                 data[0]=nuc
             print data
             cur.execute("INSERT into line (nuclide,energy,energyunc,prob,probunc,comment) values(?,?,?,?,?,?)",data)
+    dbconn.commit()
     print "So far so good..."
     cur.execute("SELECT * FROM LINE where energy > 200 and energy < 210")
     rows=cur.fetchall()
