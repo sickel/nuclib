@@ -4,7 +4,7 @@ import android.app.*;
 import android.os.*;
 import android.widget.EditText;
 import android.text.*;
-import android.widget.*;
+import android.widget.*; 
 import android.view.*;
 import android.content.Context;
 import android.database.Cursor;
@@ -118,7 +118,7 @@ import android.util.*;public class MainActivity extends Activity
 				Data =Data+Name+":";
 				String sql2 = "select energy,prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
-					sql+=" and prob >="+lowprobCutoff;
+					sql2+=" and prob >="+lowprobCutoff;
 				}
 				sql2 +=" order by prob desc";
 				Cursor c2=dbNuclides.rawQuery(sql2,null);
