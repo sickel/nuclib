@@ -6,14 +6,36 @@ import android.widget.EditText;
 import android.text.*;
 import android.widget.*;
 import android.view.*;
-
-public class MainActivity extends Activity 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.*;
+import android.database.sqlite.SQLiteOpenHelper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.File;
+import android.util.*;public class MainActivity extends Activity 
 {
+	
+	public String DB_PATH = null;
+    public final static String DB_NAME = "nuclides.db"; //take note this is in your asset folder
+    private static final int DB_VERSION = 1;
+    private SQLiteDatabase dbNuclides;
+    
+	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+		DB_PATH = "/data/data/" + this.getPackageName() + "/databases/";
+		try {copyDatabase();}
+		catch(IOException e){
+			Log.e("tag", "Failed to copy asset file: " + DB_NAME, e);
+			Toast.makeText(this, "io error - could not copy database", Toast.LENGTH_LONG).show();
+		}
 		EditText etEnergy = (EditText)findViewById(R.id.etEnergy);
 		EditText etUncert = (EditText)findViewById(R.id.etUncert);
 	    TextWatcher tw = new TextWatcher(){
@@ -42,7 +64,7 @@ public class MainActivity extends Activity
 		};
 		etEnergy.addTextChangedListener(tw);
 		etUncert.addTextChangedListener(tw);
-		
+		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
     }
 	
 	Float retnr(Integer r){
@@ -62,7 +84,119 @@ public class MainActivity extends Activity
 
     public void onClickSearch(View v)
     {
-        Toast.makeText(this, "Clicked on Button", Toast.LENGTH_LONG).show();
+		float min = retnr(R.id.etFrom);
+		float max = retnr(R.id.etTo);
+		String sql="select distinct nuclide from line where energy >="+min+" and energy <="+max;
+		sql="select distinct nuclide from line";
+		sql="select count(*) from line";
+		
+		Toast.makeText(this, sql, Toast.LENGTH_LONG).show();
+		Cursor c = dbNuclides.rawQuery(sql, null);
+
+		int Column1 = c.getColumnIndex("nuclide");
+		//int Column2 = c.getColumnIndex("Field2");
+		String Data="";
+		// Check if our result was valid.
+		c.moveToFirst();
+		if (c != null) {
+			// Loop through all Results
+			do {
+				String Name = c.getString(0);
+				Data =Data+"/";
+			}while(c.moveToNext());
+		}
+		Toast.makeText(this, Data, Toast.LENGTH_LONG).show();
+		
     } 
 	
+
+
+
+    
+
+        
+    /* Creates a empty database on the system and rewrites it with your own
+     * database.
+     * */
+ /*  public void createDataBase() throws IOException {
+
+        dbNuclides.getReadableDatabase();
+
+        try {
+            copyDatabase();
+        } catch (IOException e) {
+
+            throw new Error("Error copying database");
+
+        }
+    }
+
+    /**
+     * Copy DB from ASSETS
+     */
+
+public void copyDatabase() throws IOException {
+	File folder = new File(DB_PATH);
+	boolean success = true;
+	if (!folder.exists()) {
+		success = folder.mkdir();
+	}
+	if(!success){throw new IOException("could not create folder");}
+    File outFile = new File(DB_PATH, DB_NAME);
+	// TODO: Check if db is the correct version. copy in if updated.
+	if(!outFile.exists()){  // Open your local db as the input stream
+        InputStream myInput = this.getAssets().open(DB_NAME);
+        // Open the empty db as the output stream
+        OutputStream myOutput = new FileOutputStream(outFile);
+
+        // transfer bytes from the inputfile to the outputfile
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = myInput.read(buffer)) > 0) {
+            myOutput.write(buffer, 0, length);
+        }
+
+        // Close the streams
+        myOutput.flush();
+        myOutput.close();
+        myInput.close();
+		Toast.makeText(this, "database copied", Toast.LENGTH_LONG).show();
+}
+    }
+
+    /**
+     * Opens Database . Method is synhcronized
+     * @throws SQLException
+     */
+ /*   public synchronized void openDatabase() throws SQLException {
+        String dbPath = DB_PATH + DB_NAME;
+        myDatabase = SQLiteDatabase.openDatabase(dbPath, null,
+												 SQLiteDatabase.OPEN_READWRITE);
+    }
+
+    /**
+     * Closes database. 
+     * Method is synchronized for protection
+     */
+ /*   @Override
+    public synchronized void close() {
+        if (myDatabase != null) {
+            myDatabase.close();
+        }
+        super.close();
+    }
+
+
+    /**
+     * Check if the database exists
+     * 
+     * @param cntx
+     * @return true / false
+     */
+/*    public boolean checkDatabase(Context cntx) {
+        File dbFile = cntx.getDatabasePath(DB_NAME);
+//      Log.e("zeus", "Check db returns : " + dbFile.exists());
+        return dbFile.exists();
+
+    }*/
 }
