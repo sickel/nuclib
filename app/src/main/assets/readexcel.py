@@ -1,5 +1,9 @@
+﻿# coding=utf-8
 import xlrd
 import sqlite3
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 #----------------------------------------------------------------------
 def open_file(path):
     """
@@ -30,6 +34,7 @@ def open_file(path):
         A integer not null,\
         N integer not null,\
         halflife float,\
+        halflifeunc float,\
         element varchar not null)")
     # get the first worksheet
     sheet = book.sheet_by_index(0)
@@ -40,7 +45,7 @@ def open_file(path):
         if sheet.cell(row,1).value != '':
             data=sheet.row_values(row)
             if sheet.cell(row,0).value != '':
-                nuc=sheet.cell(row,0).value
+                nuc=sheet.cell(row,0).value.replace(' ','')
                 longname=nuc
                 if( "/" in nuc):
                    set=nuc.split("/")
@@ -69,8 +74,24 @@ def open_file(path):
     rows=cur.fetchall()
     for row in rows:
         print row
- 
-    
+        
+    book = xlrd.open_workbook('halflives.xlsx')
+    sheet = book.sheet_by_index(0)
+    firstrow=10
+    for row in range(firstrow,sheet.nrows):
+        data=sheet.row_values(row)
+        nuc=data[0].replace(' ','')
+        th=data[1].split("±")
+        print th
+        if("(" in th[0]):
+            th[0]=th[0].replace('(','')
+            th[1]=th[1].replace(')','')
+            exp=th[1].split(" 10+")
+            th[0]=float(th[0])*10**float(exp[1])
+            th[1]=float(exp[0])*10**float(exp[1])
+        print nuc,th[0],th[1]
+        cur.execute("update nuclide set halflife=?,halflifeunc=? where longname=?",[th[0],th[1],nuc])
+    dbconn.commit()
    # cell = first_sheet.cell(0,0)
    # print cell
    # print cell.value
