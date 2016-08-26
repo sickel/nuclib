@@ -76,12 +76,20 @@
 			android:layout_width="wrap_content"
 			android:text="keV"/>
 
+	
+		<CheckBox
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/cbLowProb"
+			android:text="add low prob"/>
+
 	</LinearLayout>
 
 	<LinearLayout
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:orientation="horizontal">
+		android:orientation="horizontal"
+		android:visibility="invisible">
 
 		<TextView
 			android:layout_height="wrap_content"

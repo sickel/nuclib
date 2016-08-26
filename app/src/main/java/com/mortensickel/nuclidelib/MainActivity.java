@@ -22,7 +22,14 @@ import android.util.*;public class MainActivity extends Activity
     public final static String DB_NAME = "nuclides.db"; //take note this is in your asset folder
     private static final int DB_VERSION = 1;
     private SQLiteDatabase dbNuclides;
+	public Double lowprobCutoff=0.01;
     
+	
+	// TODO: nuclide search
+	// TODO: make strings into resources
+	// TODO: better display of results
+	// TODO: more info on nuclides
+	// TODO: half life cut off
 	
 	
     @Override
@@ -86,7 +93,11 @@ import android.util.*;public class MainActivity extends Activity
     {
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
+		boolean lowprob=((CheckBox)findViewById(R.id.cbLowProb)).isChecked();
 		String sql="select distinct nuclide from line where energy >="+min+" and energy <="+max;
+		if(!lowprob){
+			sql+=" and prob >= "+lowprobCutoff;
+		}
 		//sql="select distinct nuclide from line";
 		//sql="select count(*) from line";
 		//Toast.makeText(this, sql, Toast.LENGTH_LONG).show();
@@ -105,7 +116,11 @@ import android.util.*;public class MainActivity extends Activity
 					Data=Data+"\n\n";
 				}
 				Data =Data+Name+":";
-				String sql2 = "select energy,prob from line where nuclide='"+Name+"' order by prob desc";
+				String sql2 = "select energy,prob from line where nuclide='"+Name+"' ";
+				if(!lowprob){
+					sql+=" and prob >="+lowprobCutoff;
+				}
+				sql2 +=" order by prob desc";
 				Cursor c2=dbNuclides.rawQuery(sql2,null);
 				c2.moveToFirst();
 				do{
