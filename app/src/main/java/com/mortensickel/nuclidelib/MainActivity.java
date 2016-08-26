@@ -116,7 +116,7 @@ import android.util.*;public class MainActivity extends Activity
 					Data=Data+"\n\n";
 				}
 				Data =Data+Name+":";
-				String sql2 = "select energy,prob from line where nuclide='"+Name+"' ";
+				String sql2 = "select energy,round(prob*100,1) as prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
 					sql2+=" and prob >="+lowprobCutoff;
 				}
@@ -124,7 +124,7 @@ import android.util.*;public class MainActivity extends Activity
 				Cursor c2=dbNuclides.rawQuery(sql2,null);
 				c2.moveToFirst();
 				do{
-					Data=Data+c2.getString(0)+" ("+c2.getString(1)+") ";
+					Data=Data+c2.getString(0)+" ("+c2.getString(1)+"%) ";
 				}while(c2.moveToNext());
 			}while(c.moveToNext());
 		}
