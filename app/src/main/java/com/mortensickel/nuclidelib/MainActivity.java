@@ -92,7 +92,7 @@ import android.util.*;public class MainActivity extends Activity
 		//Toast.makeText(this, sql, Toast.LENGTH_LONG).show();
 		Cursor c = dbNuclides.rawQuery(sql, null);
 
-		int Column1 = c.getColumnIndex("nuclide");
+		//int Column1 = c.getColumnIndex("nuclide");
 		//int Column2 = c.getColumnIndex("Field2");
 		String Data="";
 		// Check if our result was valid.
@@ -101,10 +101,21 @@ import android.util.*;public class MainActivity extends Activity
 			// Loop through all Results
 			do {
 				String Name = c.getString(0);
-				Data =Data+"/"+Name;
+				if(Data.length()>1){
+					Data=Data+"\n\n";
+				}
+				Data =Data+Name+":";
+				String sql2 = "select energy,prob from line where nuclide='"+Name+"' order by prob desc";
+				Cursor c2=dbNuclides.rawQuery(sql2,null);
+				c2.moveToFirst();
+				do{
+					Data=Data+c2.getString(0)+" ("+c2.getString(1)+") ";
+				}while(c2.moveToNext());
 			}while(c.moveToNext());
 		}
-		Toast.makeText(this, Data, Toast.LENGTH_LONG).show();
+		EditText etResult=(EditText)findViewById(R.id.etResult);
+		etResult.setText(Data);
+		//Toast.makeText(this, Data, Toast.LENGTH_LONG).show();
 		
     } 
 	

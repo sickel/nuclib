@@ -7,7 +7,7 @@
 
 	<LinearLayout
 		android:layout_width="wrap_content"
-	 	android:layout_height="wrap_content"
+		android:layout_height="wrap_content"
 		android:gravity="center"
 		android:orientation="horizontal">
 
@@ -115,6 +115,13 @@
 			android:text="Search"/>
 
 	</LinearLayout>
+
+	<EditText
+		android:layout_height="wrap_content"
+		android:inputType="textMultiLine"
+		android:layout_width="fill_parent"
+		android:ems="10"
+		android:id="@+id/etResult"/>
 
 </LinearLayout>
 
