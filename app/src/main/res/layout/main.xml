@@ -76,12 +76,11 @@
 			android:layout_width="wrap_content"
 			android:text="keV"/>
 
-	
 		<CheckBox
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:id="@+id/cbLowProb"
-			android:text="add low prob"/>
+			android:text="low prob"/>
 
 	</LinearLayout>
 
@@ -124,12 +123,18 @@
 
 	</LinearLayout>
 
-	<EditText
+	<TextView
 		android:layout_height="wrap_content"
-		android:inputType="textMultiLine"
-		android:layout_width="fill_parent"
-		android:ems="10"
-		android:id="@+id/etResult"/>
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_width="wrap_content"
+		android:textIsSelectable="true"
+		android:id="@+id/tvResult"
+		android:inputType="textWebEditText"/>
+
+	<ListView
+		android:layout_height="wrap_content"
+		android:id="@+id/lvResult"
+		android:layout_width="wrap_content"/>
 
 </LinearLayout>
 

@@ -3,5 +3,6 @@
 
     <string name="app_name">nuclidelib</string>
     <string name="energy">Energy</string>
-
+	<string name="html">This <b>is</b> <i>all</i> <sub>in</sub> <u><sup>one</sup></u> <a href="http://google.com">TextView</a>.</string>
+	
 </resources>

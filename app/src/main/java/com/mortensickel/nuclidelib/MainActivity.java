@@ -15,7 +15,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.File;
-import android.util.*;public class MainActivity extends Activity 
+import android.util.*;
+import java.util.ArrayList;
+
+public class MainActivity extends Activity 
 {
 	
 	public String DB_PATH = null;
@@ -24,7 +27,10 @@ import android.util.*;public class MainActivity extends Activity
     private SQLiteDatabase dbNuclides;
 	public Double lowprobCutoff=0.01;
     public int energyround=1;
-	
+	ArrayList<String> listItems=new ArrayList<String>();
+
+    //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
+    ArrayAdapter<String> adapter;
 	// TODO: nuclide search
 	// TODO: make strings into resources
 	// TODO: better display of results
@@ -43,6 +49,7 @@ import android.util.*;public class MainActivity extends Activity
 		try {copyDatabase();}
 		catch(IOException e){
 			Log.e("tag", "Failed to copy asset file: " + DB_NAME, e);
+			
 			Toast.makeText(this, "io error - could not copy database", Toast.LENGTH_LONG).show();
 		}
 		EditText etEnergy = (EditText)findViewById(R.id.etEnergy);
@@ -67,7 +74,11 @@ import android.util.*;public class MainActivity extends Activity
 				EditText edt = (EditText) findViewById(R.id.etFrom);
 				edt.setText(Float.toString(Math.max(0,energy-uncert)));
 				edt = (EditText) findViewById(R.id.etTo);
-				edt.setText(Float.toString(energy+uncert));			
+				edt.setText(Float.toString(energy+uncert));	
+				adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.listitem,
+												 listItems);
+				ListView lv=(ListView)findViewById(R.id.lvResult);
+			 	lv.setAdapter(adapter);
 			}
 		
 		};
@@ -96,28 +107,22 @@ import android.util.*;public class MainActivity extends Activity
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
 		boolean lowprob=((CheckBox)findViewById(R.id.cbLowProb)).isChecked();
+		
 		String sql="select distinct nuclide from line where energy >="+min+" and energy <="+max;
 		if(!lowprob){
 			sql+=" and prob >= "+lowprobCutoff;
 		}
-		//sql="select distinct nuclide from line";
-		//sql="select count(*) from line";
-		//Toast.makeText(this, sql, Toast.LENGTH_LONG).show();
 		Cursor c = dbNuclides.rawQuery(sql, null);
-
-		//int Column1 = c.getColumnIndex("nuclide");
-		//int Column2 = c.getColumnIndex("Field2");
 		String Data="";
 		// Check if our result was valid.
 		c.moveToFirst();
+		listItems.clear();
+		adapter.notifyDataSetChanged();
 		if (c != null && c.getCount()>0) {
 			// Loop through all Results
 			do {
 				String Name = c.getString(0);
-				if(Data.length()>1){
-					Data=Data+"\n\n";
-				}
-				Data =Data+Name+":";
+				Data =Data+"<div><b>"+Name+"</b>: ";
 				String sql2 = "select energy,round(prob*100,"+energyround+") as prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
 					sql2+=" and prob >="+lowprobCutoff;
@@ -128,10 +133,14 @@ import android.util.*;public class MainActivity extends Activity
 				do{
 					Data=Data+c2.getString(0)+" ("+c2.getString(1)+"%) ";
 				}while(c2.moveToNext());
+				Data+="</div><br />";
+				listItems.add(Name);
+				adapter.notifyDataSetChanged();
 			}while(c.moveToNext());
 		}
-		EditText etResult=(EditText)findViewById(R.id.etResult);
-		etResult.setText(Data);
+		TextView tvResult=(TextView)findViewById(R.id.tvResult);
+		Spanned spanned = Html.fromHtml(Data);
+		tvResult.setText(spanned);
 		//Toast.makeText(this, Data, Toast.LENGTH_LONG).show();
 		
     } 
