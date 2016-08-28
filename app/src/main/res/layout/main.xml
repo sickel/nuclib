@@ -26,7 +26,7 @@
 		<TextView
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="keV ±"/>
+			android:text="@string/kev_plusminus"/>
 
 		<EditText
 			android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
 			android:layout_width="wrap_content"
 			android:text="-"
 			android:layout_gravity="center|center_vertical|center_horizontal"
-			android:textAlignment="center"/>
+			/>
 
 		<EditText
 			android:layout_height="wrap_content"
@@ -74,13 +74,13 @@
 		<TextView
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="keV"/>
+			android:text="@string/keV"/>
 
 		<CheckBox
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:id="@+id/cbLowProb"
-			android:text="low prob"/>
+			android:text="@string/lowprob"/>
 
 	</LinearLayout>
 
@@ -93,7 +93,7 @@
 		<TextView
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="min t½"/>
+			android:text="@string/mint12"/>
 
 		<EditText
 			android:layout_height="wrap_content"
@@ -119,18 +119,11 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:onClick="onClickSearch"
-			android:text="Search"
+			android:text="@string/search"
 			/>
 
 	</LinearLayout>
 
-	<TextView
-		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:layout_width="wrap_content"
-		android:textIsSelectable="true"
-		android:id="@+id/tvResult"
-		android:inputType="textWebEditText"/>
 
 	<ListView
 		android:layout_height="wrap_content"

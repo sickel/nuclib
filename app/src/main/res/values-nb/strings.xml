@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">nuclidelib</string>
+    <string name="energy">Energi</string>
+    <string name="lowprob">Lav sannsynlighet</string>
+    <string name="search">Søk</string>
+    <string name="second">Sekunder</string>
+    <string name="minutes">Minutter</string>
+    <string name="hours">Timer</string>
+    <string name="days">Dager</string>
+    <string name="years">År</string>
+    <string name="keV">keV</string>
+    <string name="mint12">min t½</string>
+    <string name="kev_plusminus">keV ±</string>
+</resources>

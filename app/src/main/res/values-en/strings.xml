@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">nuclidelib</string>
     <string name="energy">Energy</string>
-	<string name="lowprob">Low Prob</string>
+    <string name="lowprob">Low prob</string>
     <string name="search">Search</string>
     <string name="second">Seconds</string>
     <string name="minutes">Minutes</string>
-    <string name="hours">hours</string>
-    <string name="days">days</string>
-    <string name="years">years</string>
+    <string name="hours">Hours</string>
+    <string name="days">Days</string>
+    <string name="years">Years</string>
     <string name="keV">keV</string>
-    <string name="mint12">min t1/2</string>
+    <string name="mint12">min t½</string>
     <string name="kev_plusminus">keV ±</string>
-
 </resources>
