@@ -65,28 +65,47 @@ public class MainActivity extends Activity
 
 			public void onTextChanged(CharSequence s, int start,
 									  int before, int count) {
-			
-				float energy = retnr(R.id.etEnergy);
-				float uncert = retnr(R.id.etUncert);
-				Spinner mySpinner=(Spinner) findViewById(R.id.SpUncerttype);
-				String text = mySpinner.getSelectedItem().toString();
-				if (text.equals("%")){
-					uncert=uncert*energy/100;
-				}
-				EditText edt = (EditText) findViewById(R.id.etFrom);
-				edt.setText(Float.toString(Math.max(0,energy-uncert)));
-				edt = (EditText) findViewById(R.id.etTo);
-				edt.setText(Float.toString(energy+uncert));	
-				adapter=new ArrayAdapter<String>(MainActivity.this,R.layout.listitem,listItems);
-				ListView lv=(ListView)findViewById(R.id.lvResult);
-			 	lv.setAdapter(adapter);
+				calcFromTo();
+				
 			}
 		
 		};
 		etEnergy.addTextChangedListener(tw);
 		etUncert.addTextChangedListener(tw);
+		Spinner spnLocale = (Spinner)findViewById(R.id.SpUncerttype);
+
+		spnLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) { 
+					calcFromTo();
+				} 
+
+				public void onNothingSelected(AdapterView<?> adapterView) {
+					return;
+				} 
+			}); 
+		adapter=new ArrayAdapter<String>(MainActivity.this,R.layout.listitem,listItems);
+		ListView lv=(ListView)findViewById(R.id.lvResult);
+		lv.setAdapter(adapter);
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
     }
+	
+	private void calcFromTo(){
+
+		float energy = retnr(R.id.etEnergy);
+		float uncert = retnr(R.id.etUncert);
+		Spinner mySpinner=(Spinner) findViewById(R.id.SpUncerttype);
+		String text = mySpinner.getSelectedItem().toString();
+		if (text.equals("%")){
+			uncert=uncert*energy/100;
+		}
+		EditText edt = (EditText) findViewById(R.id.etFrom);
+		edt.setText(Float.toString(Math.max(0,energy-uncert)));
+		edt = (EditText) findViewById(R.id.etTo);
+		edt.setText(Float.toString(energy+uncert));	
+		
+	}
+	
+	
 	
 	Float retnr(Integer r){
 		EditText edt = (EditText) findViewById(r);
