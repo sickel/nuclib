@@ -75,8 +75,7 @@ public class MainActivity extends Activity
 				edt.setText(Float.toString(Math.max(0,energy-uncert)));
 				edt = (EditText) findViewById(R.id.etTo);
 				edt.setText(Float.toString(energy+uncert));	
-				adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.listitem,
-												 listItems);
+				adapter=new ArrayAdapter<String>(MainActivity.this,R.layout.listitem,listItems);
 				ListView lv=(ListView)findViewById(R.id.lvResult);
 			 	lv.setAdapter(adapter);
 			}
