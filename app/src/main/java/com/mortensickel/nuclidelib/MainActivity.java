@@ -106,7 +106,7 @@ public class MainActivity extends Activity
     public void onClickSearch(View v)
     {
 		//Button myBtn = (Button)findViewById(R.id.btSearch);
-		v.requestFocus();
+		//v.requestFocus();
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
 		boolean lowprob=((CheckBox)findViewById(R.id.cbLowProb)).isChecked();
