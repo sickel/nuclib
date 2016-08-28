@@ -33,12 +33,14 @@ public class MainActivity extends Activity
     ArrayAdapter<String> adapter;
 	// TODO: nuclide search
 	// TODO: make strings into resources
-	// TODO: better display of results
+	// DONE: better display of result using listview
+	// TODO: Formatted strings in listview. 
 	// TODO: more info on nuclides
 	// TODO: half life cut off
 	// TODO: user settable low prob value
 	// TODO: user settable rounding
 	// TODO: user settable default uncertainty
+	// TODO: link to iaea web pages
 	
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -103,6 +105,8 @@ public class MainActivity extends Activity
 
     public void onClickSearch(View v)
     {
+		//Button myBtn = (Button)findViewById(R.id.btSearch);
+		v.requestFocus();
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
 		boolean lowprob=((CheckBox)findViewById(R.id.cbLowProb)).isChecked();
@@ -122,6 +126,7 @@ public class MainActivity extends Activity
 			do {
 				String Name = c.getString(0);
 				Data =Data+"<div><b>"+Name+"</b>: ";
+				String Line=Name+": \n";
 				String sql2 = "select energy,round(prob*100,"+energyround+") as prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
 					sql2+=" and prob >="+lowprobCutoff;
@@ -130,16 +135,20 @@ public class MainActivity extends Activity
 				Cursor c2=dbNuclides.rawQuery(sql2,null);
 				c2.moveToFirst();
 				do{
-					Data=Data+c2.getString(0)+" ("+c2.getString(1)+"%) ";
+					String GammaLine=c2.getString(0)+" ("+c2.getString(1)+"%) ";
+					Data=Data+GammaLine;
+
+					Line+=GammaLine;
 				}while(c2.moveToNext());
 				Data+="</div><br />";
-				listItems.add(Name);
-				adapter.notifyDataSetChanged();
-			}while(c.moveToNext());
+				listItems.add(Line);}
+			while(c.moveToNext());
 		}
-		TextView tvResult=(TextView)findViewById(R.id.tvResult);
-		Spanned spanned = Html.fromHtml(Data);
-		tvResult.setText(spanned);
+		adapter.notifyDataSetChanged();
+			
+		//TextView tvResult=(TextView)findViewById(R.id.tvResult);
+		//Spanned spanned = Html.fromHtml(Data);
+		//tvResult.setText(spanned);
 		//Toast.makeText(this, Data, Toast.LENGTH_LONG).show();
 		
     } 
