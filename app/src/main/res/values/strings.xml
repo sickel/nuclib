@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">nuclidelib</string>
     <string name="energy">Energy</string>
 	<string name="lowprob">Low Prob</string>
@@ -13,5 +12,7 @@
     <string name="keV">keV</string>
     <string name="mint12">min t1/2</string>
     <string name="kev_plusminus">keV ±</string>
-
+	<string name="ioErrorDatabase">io error - could not copy database</string>
+	<string name="copy_asset_error">Failed to copy asset file: </string>
+	<string name="databaseCopied">database copied</string>
 </resources>
