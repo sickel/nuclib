@@ -21,6 +21,7 @@
 			android:layout_width="70dp"
 			android:id="@+id/etEnergy"
 			android:ems="10"
+			android:imeOptions="actionSearch" 
 			android:inputType="numberDecimal"/>
 
 		<TextView
@@ -33,6 +34,7 @@
 			android:layout_width="50dp"
 			android:ems="10"
 			android:id="@+id/etUncert"
+			android:imeOptions="actionSearch" 
 			android:inputType="numberDecimal"
 			android:text="5"/>
 
@@ -54,6 +56,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="70dp"
 			android:ems="10"
+			android:imeOptions="actionSearch" 
 			android:id="@+id/etFrom"
 			android:inputType="numberDecimal"/>
 
@@ -68,6 +71,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="70dp"
 			android:ems="10"
+			android:imeOptions="actionSearch" 
 			android:id="@+id/etTo"
 			android:inputType="numberDecimal"/>
 

@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.File;
 import android.util.*;
 import java.util.ArrayList;
+import android.view.inputmethod.*;
 
 public class MainActivity extends Activity 
 {
@@ -32,6 +33,7 @@ public class MainActivity extends Activity
 	
 	
 	// TODO: nuclide search
+	// TODO: Search button on keyboard
 	// DONE: make strings into resources
 	// DONE: better display of result using listview
 	// DONE: Formatted strings in listview. 
@@ -68,6 +70,17 @@ public class MainActivity extends Activity
 		
 		};
 		etEnergy.addTextChangedListener(tw);
+		//TODO - for all textfields
+		etEnergy.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+					if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+						onClickSearch(v);
+						return true;
+					}
+					return false;
+				}
+			});
 		etUncert.addTextChangedListener(tw);
 		Spinner spnLocale = (Spinner)findViewById(R.id.SpUncerttype);
 		spnLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
