@@ -18,6 +18,7 @@ import java.io.File;
 import android.util.*;
 import java.util.ArrayList;
 import android.view.inputmethod.*;
+import android.widget.TextView.*;
 
 public class MainActivity extends Activity 
 {
@@ -33,7 +34,7 @@ public class MainActivity extends Activity
 	
 	
 	// TODO: nuclide search
-	// TODO: Search button on keyboard
+	// DONE: Search button on keyboard
 	// DONE: make strings into resources
 	// DONE: better display of result using listview
 	// DONE: Formatted strings in listview. 
@@ -69,19 +70,25 @@ public class MainActivity extends Activity
 			}
 		
 		};
+		OnEditorActionListener oeal=new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					onClickSearch(v);
+					return true;
+				}
+				return false;
+			}};
 		etEnergy.addTextChangedListener(tw);
 		//TODO - for all textfields
-		etEnergy.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-				@Override
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-					if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-						onClickSearch(v);
-						return true;
-					}
-					return false;
-				}
-			});
+		etEnergy.setOnEditorActionListener(oeal);
 		etUncert.addTextChangedListener(tw);
+		etUncert.setOnEditorActionListener(oeal);
+		EditText etFrom=(EditText)findViewById(R.id.etFrom);
+		etFrom.setOnEditorActionListener(oeal);
+		EditText etTo=(EditText)findViewById(R.id.etTo);
+		etTo.setOnEditorActionListener(oeal);
+		
 		Spinner spnLocale = (Spinner)findViewById(R.id.SpUncerttype);
 		spnLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 				public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) { 
