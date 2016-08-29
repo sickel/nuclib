@@ -22,15 +22,15 @@ public class MainActivity extends Activity
 {
 	
 	public String DB_PATH = null;
-    public final static String DB_NAME = "nuclides.db"; //take note this is in your asset folder
+    public final static String DB_NAME = "nuclides.db";
     private static final int DB_VERSION = 1;
     private SQLiteDatabase dbNuclides;
 	public Double lowprobCutoff=0.01;
     public int energyround=1;
 	ArrayList<String> listItems=new ArrayList<String>();
-
-    //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
-    ArrayAdapter<String> adapter;
+	ArrayAdapter<String> adapter; // to keep data for the listview
+	
+	
 	// TODO: nuclide search
 	// DONE: make strings into resources
 	// DONE: better display of result using listview
@@ -47,11 +47,11 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+		// String datadir=getApplicationInfo().dataDir;
 		DB_PATH = "/data/data/" + this.getPackageName() + "/databases/";
 		try {copyDatabase();}
 		catch(IOException e){
-			Log.e("tag", getString(R.string.copy_asset_error)+ DB_NAME, e);
-			
+			Log.e("tag", getString(R.string.copy_asset_error)+ DB_NAME, e);	
 			Toast.makeText(this, getString(R.string.ioErrorDatabase), Toast.LENGTH_LONG).show();
 		}
 		EditText etEnergy = (EditText)findViewById(R.id.etEnergy);
