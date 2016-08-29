@@ -12,4 +12,7 @@
     <string name="keV">keV</string>
     <string name="mint12">min t½</string>
     <string name="kev_plusminus">keV ±</string>
+    <string name="percent">%</string>
+    <string name="lowprobCutoff">Grense for å ignorer linjer (%)</string>
+    <string name="settings">Innstillinger</string>
 </resources>
