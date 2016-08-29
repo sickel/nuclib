@@ -83,7 +83,14 @@ public class MainActivity extends Activity
 					return;
 				} 
 			}); 
-		adapter=new ArrayAdapter<String>(MainActivity.this,R.layout.listitem,listItems);
+		adapter=new ArrayAdapter<String>(MainActivity.this,R.layout.listitem,listItems)
+		{ public View getView(int position, View view, ViewGroup viewGroup)
+            {
+                View v = super.getView(position, view, viewGroup);
+                String n = this.getItem(position);
+                ((TextView)v).setText(Html.fromHtml(n));
+				return v;
+            }};
 		ListView lv=(ListView)findViewById(R.id.lvResult);
 		lv.setAdapter(adapter);
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
@@ -144,8 +151,7 @@ public class MainActivity extends Activity
 			// Loop through all Results
 			do {
 				String Name = c.getString(0);
-				Data =Data+"<div><b>"+Name+"</b>: ";
-				String Line=Name+": \n";
+				String Line="<b>"+Name+":</b><br />\n";
 				String sql2 = "select energy,round(prob*100,"+energyround+") as prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
 					sql2+=" and prob >="+lowprobCutoff;
@@ -154,7 +160,12 @@ public class MainActivity extends Activity
 				Cursor c2=dbNuclides.rawQuery(sql2,null);
 				c2.moveToFirst();
 				do{
-					String GammaLine=c2.getString(0)+" ("+c2.getString(1)+"%) ";
+					String nrgy=c2.getString(0);
+					
+					if(c2.getFloat(0) >=min && c2.getFloat(0)<=max){
+						nrgy="<b>"+nrgy+"</b>";
+					}
+					String GammaLine=nrgy+" ("+c2.getString(1)+"%) ";
 					Data=Data+GammaLine;
 
 					Line+=GammaLine;
