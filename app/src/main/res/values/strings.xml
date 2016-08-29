@@ -16,5 +16,7 @@
     <string name="percent">%</string>
     <string name="lowprobCutoff">Cut off for low probability emission</string>
     <string name="settings">Settings</string>
-
+	<string name="ioErrorDatabase">io error - could not copy database</string>
+	<string name="copy_asset_error">Failed to copy asset file: </string>
+	<string name="databaseCopied">database copied</string>
 </resources>
