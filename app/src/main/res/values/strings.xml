@@ -13,5 +13,8 @@
     <string name="keV">keV</string>
     <string name="mint12">min t1/2</string>
     <string name="kev_plusminus">keV ±</string>
+    <string name="percent">%</string>
+    <string name="lowprobCutoff">Cut off for low probability emission</string>
+    <string name="settings">Settings</string>
 
 </resources>

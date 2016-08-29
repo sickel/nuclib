@@ -8,6 +8,6 @@
 	<item>@string/years</item>
 </string-array>
 <string-array name="saVartype">
-	<item>%</item>
+	<item>@string/percent</item>
 	<item>@string/keV</item></string-array>
 </resources>
