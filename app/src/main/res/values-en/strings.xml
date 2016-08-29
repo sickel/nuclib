@@ -12,4 +12,6 @@
     <string name="keV">keV</string>
     <string name="mint12">min t½</string>
     <string name="kev_plusminus">keV ±</string>
+	<string name="copy_asset_error">Failed to copy asset file: </string>
+	<string name="databaseCopied">database copied</string>
 </resources>

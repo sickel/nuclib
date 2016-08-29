@@ -32,9 +32,9 @@ public class MainActivity extends Activity
     //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
     ArrayAdapter<String> adapter;
 	// TODO: nuclide search
-	// TODO: make strings into resources
+	// DONE: make strings into resources
 	// DONE: better display of result using listview
-	// TODO: Formatted strings in listview. 
+	// DONE: Formatted strings in listview. 
 	// TODO: more info on nuclides
 	// TODO: half life cut off
 	// TODO: user settable low prob value
@@ -50,30 +50,26 @@ public class MainActivity extends Activity
 		DB_PATH = "/data/data/" + this.getPackageName() + "/databases/";
 		try {copyDatabase();}
 		catch(IOException e){
-			Log.e("tag", "Failed to copy asset file: " + DB_NAME, e);
+			Log.e("tag", getString(R.string.copy_asset_error)+ DB_NAME, e);
 			
-			Toast.makeText(this, "io error - could not copy database", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.ioErrorDatabase), Toast.LENGTH_LONG).show();
 		}
 		EditText etEnergy = (EditText)findViewById(R.id.etEnergy);
 		EditText etUncert = (EditText)findViewById(R.id.etUncert);
 	    TextWatcher tw = new TextWatcher(){
 			public void afterTextChanged(Editable s) {}
 
-			public void beforeTextChanged(CharSequence s, int start,
-										  int count, int after) {
-			}
+			public void beforeTextChanged(CharSequence s, int start,int count, int after) {
+			} 
 
-			public void onTextChanged(CharSequence s, int start,
-									  int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				calcFromTo();
-				
 			}
 		
 		};
 		etEnergy.addTextChangedListener(tw);
 		etUncert.addTextChangedListener(tw);
 		Spinner spnLocale = (Spinner)findViewById(R.id.SpUncerttype);
-
 		spnLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 				public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) { 
 					calcFromTo();
@@ -97,7 +93,6 @@ public class MainActivity extends Activity
     }
 	
 	private void calcFromTo(){
-
 		float energy = retnr(R.id.etEnergy);
 		float uncert = retnr(R.id.etUncert);
 		Spinner mySpinner=(Spinner) findViewById(R.id.SpUncerttype);
@@ -109,6 +104,8 @@ public class MainActivity extends Activity
 		edt.setText(Float.toString(Math.max(0,energy-uncert)));
 		edt = (EditText) findViewById(R.id.etTo);
 		edt.setText(Float.toString(energy+uncert));	
+		listItems.clear();
+		adapter.notifyDataSetChanged();
 		
 	}
 	
@@ -133,25 +130,27 @@ public class MainActivity extends Activity
     {
 		//Button myBtn = (Button)findViewById(R.id.btSearch);
 		//v.requestFocus();
+		// TODO : hide keyboard
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
 		boolean lowprob=((CheckBox)findViewById(R.id.cbLowProb)).isChecked();
 		
-		String sql="select distinct nuclide from line where energy >="+min+" and energy <="+max;
+		String sql="select distinct line.nuclide,name from line,nuclide where nuclide.longname=line.nuclide and line.energy >="+min+" and line.energy <="+max;
 		if(!lowprob){
 			sql+=" and prob >= "+lowprobCutoff;
 		}
 		Cursor c = dbNuclides.rawQuery(sql, null);
-		String Data="";
-		// Check if our result was valid.
 		c.moveToFirst();
 		listItems.clear();
 		adapter.notifyDataSetChanged();
 		if (c != null && c.getCount()>0) {
-			// Loop through all Results
+			// Loop through all nuclides
 			do {
 				String Name = c.getString(0);
-				String Line="<b>"+Name+":</b><br />\n";
+				String Line="<b>"+c.getString(1)+":</b><br />\n";
+				// fetches all gammalines for the selected nuclide
+				// wants emission probabilities as rounded percentages
+				//  TODO: use some.kind of prepared statements
 				String sql2 = "select energy,round(prob*100,"+energyround+") as prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
 					sql2+=" and prob >="+lowprobCutoff;
@@ -161,50 +160,19 @@ public class MainActivity extends Activity
 				c2.moveToFirst();
 				do{
 					String nrgy=c2.getString(0);
-					
 					if(c2.getFloat(0) >=min && c2.getFloat(0)<=max){
 						nrgy="<b>"+nrgy+"</b>";
 					}
 					String GammaLine=nrgy+" ("+c2.getString(1)+"%) ";
-					Data=Data+GammaLine;
-
 					Line+=GammaLine;
 				}while(c2.moveToNext());
-				Data+="</div><br />";
 				listItems.add(Line);}
 			while(c.moveToNext());
 		}
 		adapter.notifyDataSetChanged();
-			
-		//TextView tvResult=(TextView)findViewById(R.id.tvResult);
-		//Spanned spanned = Html.fromHtml(Data);
-		//tvResult.setText(spanned);
-		//Toast.makeText(this, Data, Toast.LENGTH_LONG).show();
-		
-    } 
-	
-
-
-
+    }     
+   
     
-
-        
-    /* Creates a empty database on the system and rewrites it with your own
-     * database.
-     * */
- /*  public void createDataBase() throws IOException {
-
-        dbNuclides.getReadableDatabase();
-
-        try {
-            copyDatabase();
-        } catch (IOException e) {
-
-            throw new Error("Error copying database");
-
-        }
-    }
-
     /**
      * Copy DB from ASSETS
      */
@@ -234,43 +202,8 @@ public void copyDatabase() throws IOException {
         myOutput.flush();
         myOutput.close();
         myInput.close();
-		Toast.makeText(this, "database copied", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, getString(R.string.databaseCopied), Toast.LENGTH_LONG).show();
 }
     }
 
-    /**
-     * Opens Database . Method is synhcronized
-     * @throws SQLException
-     */
- /*   public synchronized void openDatabase() throws SQLException {
-        String dbPath = DB_PATH + DB_NAME;
-        myDatabase = SQLiteDatabase.openDatabase(dbPath, null,
-												 SQLiteDatabase.OPEN_READWRITE);
-    }
-
-    /**
-     * Closes database. 
-     * Method is synchronized for protection
-     */
- /*   @Override
-    public synchronized void close() {
-        if (myDatabase != null) {
-            myDatabase.close();
-        }
-        super.close();
-    }
-
-
-    /**
-     * Check if the database exists
-     * 
-     * @param cntx
-     * @return true / false
-     */
-/*    public boolean checkDatabase(Context cntx) {
-        File dbFile = cntx.getDatabasePath(DB_NAME);
-//      Log.e("zeus", "Check db returns : " + dbFile.exists());
-        return dbFile.exists();
-
-    }*/
 }
