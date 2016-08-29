@@ -31,8 +31,8 @@ public class MainActivity extends Activity
     public int energyround=1;
 	ArrayList<String> listItems=new ArrayList<String>();
 	ArrayAdapter<String> adapter; // to keep data for the listview
-	
-	
+	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
+	// secound, minute, hour, day, year
 	// TODO: nuclide search
 	// DONE: Search button on keyboard
 	// DONE: make strings into resources
@@ -70,6 +70,7 @@ public class MainActivity extends Activity
 			}
 		
 		};
+		// to make the search button work as expected
 		OnEditorActionListener oeal=new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -80,7 +81,6 @@ public class MainActivity extends Activity
 				return false;
 			}};
 		etEnergy.addTextChangedListener(tw);
-		//TODO - for all textfields
 		etEnergy.setOnEditorActionListener(oeal);
 		etUncert.addTextChangedListener(tw);
 		etUncert.setOnEditorActionListener(oeal);
@@ -126,19 +126,18 @@ public class MainActivity extends Activity
 		edt.setText(Float.toString(energy+uncert));	
 		listItems.clear();
 		adapter.notifyDataSetChanged();
-		
 	}
 	
-	
-	
+
 	Float retnr(Integer r){
+		// returns a float from.the edittext - 0 if empty
 		EditText edt = (EditText) findViewById(r);
 		String str=edt.getText().toString();
 		float retval;
-		
 		if(str.equals("")){
 			retval=Float.valueOf("0.0");
 		}else{
+			//TODO wrap this in a try
 			retval=Float.valueOf(str);
 		}
 		return(retval);
@@ -153,11 +152,18 @@ public class MainActivity extends Activity
 		// TODO : hide keyboard
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
+		float thalf=retnr(R.id.etThalf);
+		Spinner mySpinner=(Spinner) findViewById(R.id.spThalf);
+		Integer thalftype = mySpinner.getSelectedItemPosition();
+		thalf=timefactors[thalftype]*thalf/(24*3600); // halflife in days as in table from iaea
 		boolean lowprob=((CheckBox)findViewById(R.id.cbLowProb)).isChecked();
 		
 		String sql="select distinct line.nuclide,name from line,nuclide where nuclide.longname=line.nuclide and line.energy >="+min+" and line.energy <="+max;
 		if(!lowprob){
 			sql+=" and prob >= "+lowprobCutoff;
+		}
+		if(thalf>0){
+			sql+=" and halflife >="+thalf;
 		}
 		Cursor c = dbNuclides.rawQuery(sql, null);
 		c.moveToFirst();
