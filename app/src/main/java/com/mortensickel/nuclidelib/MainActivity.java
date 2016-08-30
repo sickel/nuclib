@@ -33,7 +33,7 @@ public class MainActivity extends Activity
 	ArrayList<String> listItems=new ArrayList<String>();
 	ArrayAdapter<String> adapter; // to keep data for the listview
 	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
-	// secound, minute, hour, day, year
+	// second, minute, hour, day, year
 	// TODO: nuclide search
 	// DONE: Search button on keyboard
 	// DONE: make strings into resources
@@ -159,7 +159,7 @@ public class MainActivity extends Activity
 		thalf=timefactors[thalftype]*thalf/(24*3600); // halflife in days as in table from iaea
 		boolean lowprob=((CheckBox)findViewById(R.id.cbLowProb)).isChecked();
 		
-		String sql="select distinct line.nuclide,name from line,nuclide where nuclide.longname=line.nuclide and line.energy >="+min+" and line.energy <="+max;
+		String sql="select distinct line.nuclide,name,halflife from line,nuclide where nuclide.longname=line.nuclide and line.energy >="+min+" and line.energy <="+max;
 		if(!lowprob){
 			sql+=" and prob >= "+lowprobCutoff;
 		}
@@ -174,7 +174,24 @@ public class MainActivity extends Activity
 			// Loop through all nuclides
 			do {
 				String Name = c.getString(0);
-				String Line="<b>"+c.getString(1)+":</b><br />\n";
+				String Unit = getString(R.string.days);
+				thalf = c.getFloat(2);
+				if(thalf>=365.22){
+					thalf/=365.22;
+					Unit = getString(R.string.years);
+				}else if(thalf<1){
+					thalf*=24;
+					Unit = getString(R.string.hours);
+					if(thalf<1){
+						thalf*=60;
+						Unit=getString(R.string.minutes);
+						if(thalf<1){
+							thalf*=60;
+							Unit=getString(R.string.second);
+						}
+					}
+				}
+				String Line="<b>"+c.getString(1)+":</b> ("+Float.toString(thalf)+" "+Unit+")<br />\n";
 				// fetches all gammalines for the selected nuclide
 				// wants emission probabilities as rounded percentages
 				//  TODO: use some.kind of prepared statements
