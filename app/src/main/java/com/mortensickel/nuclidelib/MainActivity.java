@@ -175,6 +175,8 @@ public class MainActivity extends Activity
 			do {
 				String Name = c.getString(0);
 				String Unit = getString(R.string.days);
+				String headformat="<b>%s</b>: (%.5g %s)<br />";
+				// todo: cleaner formatting using the timeconvertarray
 				thalf = c.getFloat(2);
 				if(thalf>=365.22){
 					thalf/=365.22;
@@ -191,10 +193,10 @@ public class MainActivity extends Activity
 						}
 					}
 				}
-				String Line="<b>"+c.getString(1)+":</b> ("+Float.toString(thalf)+" "+Unit+")<br />\n";
+				String Line=String.format(headformat,c.getString(1),thalf,Unit);
 				// fetches all gammalines for the selected nuclide
 				// wants emission probabilities as rounded percentages
-				//  TODO: use some.kind of prepared statements
+				//  TODO: use some.kind of prepared statements if available
 				String sql2 = "select energy,round(prob*100,"+energyround+") as prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
 					sql2+=" and prob >="+lowprobCutoff;
