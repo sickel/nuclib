@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.io.RandomAccessFile;
 import android.util.*;
 import java.util.ArrayList;
 import android.view.inputmethod.*;
@@ -53,7 +54,7 @@ public class MainActivity extends Activity
 		// String datadir=getApplicationInfo().dataDir;
 		DB_PATH = "/data/data/" + this.getPackageName() + "/databases/";
 		try {copyDatabase();}
-		catch(IOException e){
+		catch(Exception e){
 			Log.e("tag", getString(R.string.copy_asset_error)+ DB_NAME, e);	
 			Toast.makeText(this, getString(R.string.ioErrorDatabase), Toast.LENGTH_LONG).show();
 		}
@@ -203,17 +204,31 @@ public class MainActivity extends Activity
      * Copy DB from ASSETS
      */
 
-public void copyDatabase() throws IOException {
+public void copyDatabase() throws Exception {
 	File folder = new File(DB_PATH);
 	boolean success = true;
 	if (!folder.exists()) {
 		success = folder.mkdir();
 	}
-	if(!success){throw new IOException("could not create folder");}
+	if(!success){throw new IOException(getString(R.string.errCreateFolder));}
     File outFile = new File(DB_PATH, DB_NAME);
 	// TODO: Check if db is the correct version. copy in if updated.
-	if(!outFile.exists()){  // Open your local db as the input stream
-        InputStream myInput = this.getAssets().open(DB_NAME);
+	Boolean doCopy=!outFile.exists();
+	File dbversion = new File(getFilesDir(), "DBVERSION");
+	try {
+		if (!dbversion.exists()){
+			doCopy=true;
+		}else{
+			Integer version=readDbVersion(dbversion);
+			doCopy=doCopy || (version != DB_VERSION);
+		}
+			
+	} catch (Exception e) {
+		throw new RuntimeException(e);
+	}
+	if(doCopy){  // Open your local db as the input stream
+        saveDbVersion(dbversion); 
+		InputStream myInput = this.getAssets().open(DB_NAME);
         // Open the empty db as the output stream
         OutputStream myOutput = new FileOutputStream(outFile);
 
@@ -229,7 +244,22 @@ public void copyDatabase() throws IOException {
         myOutput.close();
         myInput.close();
 		Toast.makeText(this, getString(R.string.databaseCopied), Toast.LENGTH_LONG).show();
-}
-    }
+	}
+ }
+
+void saveDbVersion(File dbversion) throws Exception {
+	FileOutputStream out = new FileOutputStream(dbversion);
+    out.write(Integer.toString(DB_VERSION).getBytes());
+    out.close();
+}	
+	
+Integer readDbVersion(File dbversion) throws Exception{
+	RandomAccessFile f = new RandomAccessFile(dbversion, "r");
+        byte[] bytes = new byte[(int) f.length()];
+        f.readFully(bytes);
+        f.close();
+        return Integer.parseInt(new String(bytes));
+		//return(1);
+	}
 
 }

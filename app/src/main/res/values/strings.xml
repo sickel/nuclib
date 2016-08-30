@@ -15,4 +15,5 @@
 	<string name="ioErrorDatabase">io error - could not copy database</string>
 	<string name="copy_asset_error">Failed to copy asset file: </string>
 	<string name="databaseCopied">database copied</string>
+	<string name="errCreateFolder">could not create folder</string>
 </resources>
