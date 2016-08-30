@@ -19,4 +19,6 @@
 	<string name="nuclide">Nuclide</string>
 	<string name="massnumber">Mass number</string>
 	<string name="element">Element</string>
-	</resources>
+	<string name="noDataFound">No data.found</string>
+</resources>
+	
