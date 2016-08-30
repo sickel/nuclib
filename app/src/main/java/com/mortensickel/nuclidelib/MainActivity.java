@@ -20,6 +20,7 @@ import android.util.*;
 import java.util.ArrayList;
 import android.view.inputmethod.*;
 import android.widget.TextView.*;
+import android.content.Intent;
 
 public class MainActivity extends Activity 
 {
@@ -129,8 +130,14 @@ public class MainActivity extends Activity
 		adapter.notifyDataSetChanged();
 	}
 	
-
-	Float retnr(Integer r){
+	public void nuclideSearch(View v){
+		Intent intent=new Intent(this,NuclideSearchActivity.class);
+		startActivity(intent);
+	}
+	
+	
+	
+	private Float retnr(Integer r){
 		// returns a float from.the edittext - 0 if empty
 		EditText edt = (EditText) findViewById(r);
 		String str=edt.getText().toString();
@@ -170,16 +177,16 @@ public class MainActivity extends Activity
 		c.moveToFirst();
 		listItems.clear();
 		adapter.notifyDataSetChanged();
+		String headformat="<b>%s</b>: (%.5g %s)<br />";
 		if (c != null && c.getCount()>0) {
 			// Loop through all nuclides
 			do {
 				String Name = c.getString(0);
 				String Unit = getString(R.string.days);
-				String headformat="<b>%s</b>: (%.5g %s)<br />";
 				// todo: cleaner formatting using the timeconvertarray
 				thalf = c.getFloat(2);
-				if(thalf>=365.22){
-					thalf/=365.22;
+				if(thalf>=365.24){
+					thalf/=365.24;
 					Unit = getString(R.string.years);
 				}else if(thalf<1){
 					thalf*=24;
