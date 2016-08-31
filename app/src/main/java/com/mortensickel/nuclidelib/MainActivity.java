@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.io.RandomAccessFile;
 import android.util.*;
 import java.util.ArrayList;
 import android.view.inputmethod.*;
@@ -32,7 +33,7 @@ public class MainActivity extends Activity
 	ArrayList<String> listItems=new ArrayList<String>();
 	ArrayAdapter<String> adapter; // to keep data for the listview
 	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
-	// secound, minute, hour, day, year
+	// second, minute, hour, day, year
 	// TODO: nuclide search
 	// DONE: Search button on keyboard
 	// DONE: make strings into resources
@@ -53,7 +54,7 @@ public class MainActivity extends Activity
 		// String datadir=getApplicationInfo().dataDir;
 		DB_PATH = "/data/data/" + this.getPackageName() + "/databases/";
 		try {copyDatabase();}
-		catch(IOException e){
+		catch(Exception e){
 			Log.e("tag", getString(R.string.copy_asset_error)+ DB_NAME, e);	
 			Toast.makeText(this, getString(R.string.ioErrorDatabase), Toast.LENGTH_LONG).show();
 		}
@@ -158,7 +159,7 @@ public class MainActivity extends Activity
 		thalf=timefactors[thalftype]*thalf/(24*3600); // halflife in days as in table from iaea
 		boolean lowprob=((CheckBox)findViewById(R.id.cbLowProb)).isChecked();
 		
-		String sql="select distinct line.nuclide,name from line,nuclide where nuclide.longname=line.nuclide and line.energy >="+min+" and line.energy <="+max;
+		String sql="select distinct line.nuclide,name,halflife from line,nuclide where nuclide.longname=line.nuclide and line.energy >="+min+" and line.energy <="+max;
 		if(!lowprob){
 			sql+=" and prob >= "+lowprobCutoff;
 		}
@@ -173,10 +174,29 @@ public class MainActivity extends Activity
 			// Loop through all nuclides
 			do {
 				String Name = c.getString(0);
-				String Line="<b>"+c.getString(1)+":</b><br />\n";
+				String Unit = getString(R.string.days);
+				String headformat="<b>%s</b>: (%.5g %s)<br />";
+				// todo: cleaner formatting using the timeconvertarray
+				thalf = c.getFloat(2);
+				if(thalf>=365.22){
+					thalf/=365.22;
+					Unit = getString(R.string.years);
+				}else if(thalf<1){
+					thalf*=24;
+					Unit = getString(R.string.hours);
+					if(thalf<1){
+						thalf*=60;
+						Unit=getString(R.string.minutes);
+						if(thalf<1){
+							thalf*=60;
+							Unit=getString(R.string.second);
+						}
+					}
+				}
+				String Line=String.format(headformat,c.getString(1),thalf,Unit);
 				// fetches all gammalines for the selected nuclide
 				// wants emission probabilities as rounded percentages
-				//  TODO: use some.kind of prepared statements
+				//  TODO: use some.kind of prepared statements if available
 				String sql2 = "select energy,round(prob*100,"+energyround+") as prob from line where nuclide='"+Name+"' ";
 				if(!lowprob){
 					sql2+=" and prob >="+lowprobCutoff;
@@ -203,17 +223,31 @@ public class MainActivity extends Activity
      * Copy DB from ASSETS
      */
 
-public void copyDatabase() throws IOException {
+public void copyDatabase() throws Exception {
 	File folder = new File(DB_PATH);
 	boolean success = true;
 	if (!folder.exists()) {
 		success = folder.mkdir();
 	}
-	if(!success){throw new IOException("could not create folder");}
+	if(!success){throw new IOException(getString(R.string.errCreateFolder));}
     File outFile = new File(DB_PATH, DB_NAME);
 	// TODO: Check if db is the correct version. copy in if updated.
-	if(!outFile.exists()){  // Open your local db as the input stream
-        InputStream myInput = this.getAssets().open(DB_NAME);
+	Boolean doCopy=!outFile.exists();
+	File dbversion = new File(getFilesDir(), "DBVERSION");
+	try {
+		if (!dbversion.exists()){
+			doCopy=true;
+		}else{
+			Integer version=readDbVersion(dbversion);
+			doCopy=doCopy || (version != DB_VERSION);
+		}
+			
+	} catch (Exception e) {
+		throw new RuntimeException(e);
+	}
+	if(doCopy){  // Open your local db as the input stream
+        saveDbVersion(dbversion); 
+		InputStream myInput = this.getAssets().open(DB_NAME);
         // Open the empty db as the output stream
         OutputStream myOutput = new FileOutputStream(outFile);
 
@@ -229,7 +263,22 @@ public void copyDatabase() throws IOException {
         myOutput.close();
         myInput.close();
 		Toast.makeText(this, getString(R.string.databaseCopied), Toast.LENGTH_LONG).show();
-}
-    }
+	}
+ }
+
+void saveDbVersion(File dbversion) throws Exception {
+	FileOutputStream out = new FileOutputStream(dbversion);
+    out.write(Integer.toString(DB_VERSION).getBytes());
+    out.close();
+}	
+	
+Integer readDbVersion(File dbversion) throws Exception{
+	RandomAccessFile f = new RandomAccessFile(dbversion, "r");
+        byte[] bytes = new byte[(int) f.length()];
+        f.readFully(bytes);
+        f.close();
+        return Integer.parseInt(new String(bytes));
+		//return(1);
+	}
 
 }
