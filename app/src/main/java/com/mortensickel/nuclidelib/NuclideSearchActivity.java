@@ -54,7 +54,6 @@ public class NuclideSearchActivity extends Activity
 	
 	public void nuclideSearchButton(View v){
 		String sql=SQLFromForm();
-		//Toast.makeText(getApplicationContext(),sql,Toast.LENGTH_LONG).show();
 		runSQL(sql);
 	}
 	
@@ -71,13 +70,12 @@ public class NuclideSearchActivity extends Activity
 		adapter.notifyDataSetChanged();
 		if (c != null && c.getCount()>0) {
 			c.moveToFirst();
-			//String linetemplate="<b>%s</b><br />T 1/2: %s";
 			String linetemplate="<b><sup>%d</sup>%s</b><br />T 1/2: %s <br/>"+getString(R.string.gammaLineProb)+" ";
 			do {
 				String Line;
-				// String Name = c.getString(2);
 				String thalf=MainActivity.formatthalf(c.getDouble(6),getApplicationContext());
 				Line=  String.format(linetemplate,c.getInt(4),c.getString(8),thalf);
+				// TODO: fix display of metastables
 				String sql2 = "select energy,round(prob*100,"+probround+") as prob from line where nuclide='"+c.getString(1)+"' ";
 				sql2 +=" order by prob desc";
 				Cursor c2=dbNuclides.rawQuery(sql2,null);
@@ -101,6 +99,8 @@ public class NuclideSearchActivity extends Activity
 		String where=whereinit;
 		String Element=((TextView)findViewById(R.id.etElement)).getText().toString();
 		if (!Element.isEmpty()){
+			Element = Element.substring(0,1).toUpperCase() + Element.substring(1).toLowerCase();
+			
 			where+="element=\""+Element+"\"";
 			}
 		String Massnumber=((TextView)findViewById(R.id.etMassnumber)).getText().toString();
