@@ -48,6 +48,9 @@ public class NuclideSearchActivity extends Activity
 		}
 		
 	}
+	public void closeActivity(View v){
+		finish();
+	}
 	
 	public void nuclideSearchButton(View v){
 		String sql=SQLFromForm();

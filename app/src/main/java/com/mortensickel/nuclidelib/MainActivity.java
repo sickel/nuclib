@@ -230,6 +230,9 @@ public class MainActivity extends Activity
 				}while(c2.moveToNext());
 				listItems.add(Line);}
 			while(c.moveToNext());
+		}else{
+			Toast.makeText(this, getString(R.string.noDataFound), Toast.LENGTH_LONG).show();
+			
 		}
 		adapter.notifyDataSetChanged();
     }     

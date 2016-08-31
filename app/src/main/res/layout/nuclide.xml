@@ -39,7 +39,13 @@
 			android:layout_width="wrap_content"
 			android:text="@string/search"
 			android:onClick="nuclideSearchButton"/>
-
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="@string/backarrow"
+			android:onClick="closeActivity"
+			android:id="@+id/btBack"/>
+		
 	</LinearLayout>
 
 	<ListView

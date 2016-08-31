@@ -12,4 +12,15 @@
     <string name="keV">keV</string>
     <string name="mint12">min t½</string>
     <string name="kev_plusminus">keV ±</string>
+	<string name="ioErrorDatabase">Kunne ikke kopiere database</string>
+	<string name="copy_asset_error">Kunne ikke kopiere fil: </string>
+	<string name="databaseCopied">Database kopiert</string>
+	<string name="errCreateFolder">Kunne ikke lage katalog </string>
+	<string name="nuclide">Nuklide</string>
+	<string name="massnumber">Massetall</string>
+	<string name="element">Grunnstoff</string>
+	<string name="noDataFound">Ingen data funnet</string>
+	<string name="gammaLineProb">Gammaenergier i keV (sannsynlighet): </string>
+	<string name="nucsearch">Nuklidesøk</string>
+	<string name="backarrow">&lt;-</string>
 </resources>
