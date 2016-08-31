@@ -57,10 +57,11 @@ public class NuclideSearchActivity extends Activity
 		adapter.notifyDataSetChanged();
 		if (c != null && c.getCount()>0) {
 			c.moveToFirst();
-	// Loop through all nuclides
+			String linetemplate="<b>%s</b><br />T 1/2: %s";
 			do {
-				String Name = c.getString(1);
-				listItems.add(Name);
+				String Name = c.getString(2);
+				String thalf=MainActivity.formatthalf(c.getDouble(6),getApplicationContext());
+				listItems.add(String.format(linetemplate,Name,thalf));
 			}while(c.moveToNext());
 			adapter.notifyDataSetChanged();
 		}else{

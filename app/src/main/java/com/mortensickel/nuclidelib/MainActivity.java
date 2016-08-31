@@ -177,30 +177,13 @@ public class MainActivity extends Activity
 		c.moveToFirst();
 		listItems.clear();
 		adapter.notifyDataSetChanged();
-		String headformat="<b>%s</b>: (%.5g %s)<br />";
+		String headformat="<b>%s</b>: (%s)<br />";
 		if (c != null && c.getCount()>0) {
 			// Loop through all nuclides
 			do {
 				String Name = c.getString(0);
-				String Unit = getString(R.string.days);
-				// todo: cleaner formatting using the timeconvertarray
-				thalf = c.getFloat(2);
-				if(thalf>=365.24){
-					thalf/=365.24;
-					Unit = getString(R.string.years);
-				}else if(thalf<1){
-					thalf*=24;
-					Unit = getString(R.string.hours);
-					if(thalf<1){
-						thalf*=60;
-						Unit=getString(R.string.minutes);
-						if(thalf<1){
-							thalf*=60;
-							Unit=getString(R.string.second);
-						}
-					}
-				}
-				String Line=String.format(headformat,c.getString(1),thalf,Unit);
+				String thalfunit=formatthalf(c.getDouble(2),getApplicationContext());
+				String Line=String.format(headformat,c.getString(1),thalfunit);
 				// fetches all gammalines for the selected nuclide
 				// wants emission probabilities as rounded percentages
 				//  TODO: use some.kind of prepared statements if available
@@ -225,10 +208,35 @@ public class MainActivity extends Activity
 		adapter.notifyDataSetChanged();
     }     
    
-    
+   
+public static String formatthalf(Double thalf,Context c){
+	String Unit =c.getString(R.string.days);
+	// todo: cleaner formatting using the timeconvertarray
+	//thalf = c.getFloat(2);
+	if(thalf>=365.24){
+		thalf=thalf/365.24;
+		Unit = c.getString(R.string.years);
+	}else if(thalf<1){
+		thalf*=24;
+		Unit = c.getString(R.string.hours);
+		if(thalf<1){
+			thalf*=60;
+			Unit=c.getString(R.string.minutes);
+			if(thalf<1){
+				thalf*=60;
+				Unit=c.getString(R.string.second);
+			}
+		}
+	}
+	return String.format("%.5g %s",thalf, Unit);
+} 
+	
+
     /**
      * Copy DB from ASSETS
      */
+	
+
 
 public void copyDatabase() throws Exception {
 	File folder = new File(DB_PATH);
