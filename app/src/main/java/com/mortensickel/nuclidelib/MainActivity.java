@@ -20,7 +20,10 @@ import android.util.*;
 import java.util.ArrayList;
 import android.view.inputmethod.*;
 import android.widget.TextView.*;
-
+import android.content.Intent;
+import android.widget.AdapterView.*;
+import java.security.*;
+import java.util.regex.*;
 public class MainActivity extends Activity 
 {
 	
@@ -33,14 +36,17 @@ public class MainActivity extends Activity
 	ArrayList<String> listItems=new ArrayList<String>();
 	ArrayAdapter<String> adapter; // to keep data for the listview
 	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
+	public static String NUCLIDE_SEARCH="com.mortensickel.nuclidelib.SEARCH_NUCLIDE";
 	// second, minute, hour, day, year
-	// TODO: nuclide search
+	// DONE: nuclide search
 	// DONE: Search button on keyboard
 	// DONE: make strings into resources
 	// DONE: better display of result using listview
 	// DONE: Formatted strings in listview. 
-	// TODO: more info on nuclides
-	// TODO: half life cut off
+	// TODO: more info on nuclide
+	// DONE: framework for info. more info in db? using iaea app?
+	// DONE: half life cut off
+	// TODO: menu 
 	// TODO: user settable low prob value
 	// TODO: user settable rounding
 	// TODO: user settable default uncertainty
@@ -105,11 +111,27 @@ public class MainActivity extends Activity
             {
                 View v = super.getView(position, view, viewGroup);
                 String n = this.getItem(position);
-                ((TextView)v).setText(Html.fromHtml(n));
+                
+				((TextView)v).setText(Html.fromHtml(n));
 				return v;
             }};
 		ListView lv=(ListView)findViewById(R.id.lvResult);
 		lv.setAdapter(adapter);
+		lv.setOnItemClickListener(new OnItemClickListener(){
+			
+			Pattern p = Pattern.compile("<b>(.*?)</b>");
+			// nuclide is the first thing between b-tags
+			@Override
+			public void onItemClick(AdapterView<?> parent,View v,int position, long id){
+				Intent intent=new Intent(MainActivity.this,NuclideSearchActivity.class);
+			    String data=(String)parent.getItemAtPosition(position);
+				Matcher m = p.matcher(data);
+				m.find();
+				data=m.group(1);
+				intent.putExtra(NUCLIDE_SEARCH, data);
+				startActivity(intent);
+			}
+		});
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
     }
 	
@@ -129,8 +151,19 @@ public class MainActivity extends Activity
 		adapter.notifyDataSetChanged();
 	}
 	
-
-	Float retnr(Integer r){
+	public void nuclideSearch(View v){
+		Intent intent=new Intent(this,NuclideSearchActivity.class);
+		intent.putExtra(NUCLIDE_SEARCH, "");
+		startActivity(intent);
+	}
+	
+	public void onClickList(View v){
+		Intent intent=new Intent(this,NuclideSearchActivity.class);
+		intent.putExtra(NUCLIDE_SEARCH, "Cs137");
+		startActivity(intent);
+	}
+	
+	private Float retnr(Integer r){
 		// returns a float from.the edittext - 0 if empty
 		EditText edt = (EditText) findViewById(r);
 		String str=edt.getText().toString();
@@ -150,7 +183,7 @@ public class MainActivity extends Activity
     {
 		//Button myBtn = (Button)findViewById(R.id.btSearch);
 		//v.requestFocus();
-		// TODO : hide keyboard
+		// TODO : hide keyboard when searching
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
 		float thalf=retnr(R.id.etThalf);
@@ -170,30 +203,13 @@ public class MainActivity extends Activity
 		c.moveToFirst();
 		listItems.clear();
 		adapter.notifyDataSetChanged();
+		String headformat="<b>%s</b>: (%s)<br />";
 		if (c != null && c.getCount()>0) {
 			// Loop through all nuclides
 			do {
 				String Name = c.getString(0);
-				String Unit = getString(R.string.days);
-				String headformat="<b>%s</b>: (%.5g %s)<br />";
-				// todo: cleaner formatting using the timeconvertarray
-				thalf = c.getFloat(2);
-				if(thalf>=365.22){
-					thalf/=365.22;
-					Unit = getString(R.string.years);
-				}else if(thalf<1){
-					thalf*=24;
-					Unit = getString(R.string.hours);
-					if(thalf<1){
-						thalf*=60;
-						Unit=getString(R.string.minutes);
-						if(thalf<1){
-							thalf*=60;
-							Unit=getString(R.string.second);
-						}
-					}
-				}
-				String Line=String.format(headformat,c.getString(1),thalf,Unit);
+				String thalfunit=formatthalf(c.getDouble(2),getApplicationContext());
+				String Line=String.format(headformat,c.getString(1),thalfunit);
 				// fetches all gammalines for the selected nuclide
 				// wants emission probabilities as rounded percentages
 				//  TODO: use some.kind of prepared statements if available
@@ -214,14 +230,42 @@ public class MainActivity extends Activity
 				}while(c2.moveToNext());
 				listItems.add(Line);}
 			while(c.moveToNext());
+		}else{
+			Toast.makeText(this, getString(R.string.noDataFound), Toast.LENGTH_LONG).show();
+			
 		}
 		adapter.notifyDataSetChanged();
     }     
    
-    
+   
+public static String formatthalf(Double thalf,Context c){
+	String Unit =c.getString(R.string.days);
+	// todo: cleaner formatting using the timeconvertarray
+	//thalf = c.getFloat(2);
+	if(thalf>=365.24){
+		thalf=thalf/365.24;
+		Unit = c.getString(R.string.years);
+	}else if(thalf<1){
+		thalf*=24;
+		Unit = c.getString(R.string.hours);
+		if(thalf<1){
+			thalf*=60;
+			Unit=c.getString(R.string.minutes);
+			if(thalf<1){
+				thalf*=60;
+				Unit=c.getString(R.string.second);
+			}
+		}
+	}
+	return String.format("%.5g %s",thalf, Unit);
+} 
+	
+
     /**
      * Copy DB from ASSETS
      */
+	
+
 
 public void copyDatabase() throws Exception {
 	File folder = new File(DB_PATH);
