@@ -8,6 +8,7 @@ import android.widget.*;
 import android.view.*;
 import java.util.ArrayList;
 import android.text.*;
+import android.content.Intent;
 
 public class NuclideSearchActivity extends Activity
 {
@@ -22,13 +23,12 @@ public class NuclideSearchActivity extends Activity
 		setContentView(R.layout.nuclide);
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
     
-	/*	Intent intent = getIntent();
-		String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-		TextView textView = new TextView(this);
+		Intent intent = getIntent();
+		String message = intent.getStringExtra(MainActivity.NUCLIDE_SEARCH);
+		/*TextView textView = new TextView(this);
 		textView.setTextSize(40);
 		textView.setText(message);
-
-		ViewGroup layout = (ViewGroup) findViewById(R.id.activity_display_message);
+		ViewGroup layout = (ViewGroup) findViewById(R.id.llHolder);
 		layout.addView(textView);*/
 		
 		adapter=new ArrayAdapter<String>(NuclideSearchActivity.this,R.layout.listitem,listItems)
@@ -41,6 +41,9 @@ public class NuclideSearchActivity extends Activity
             }};
 		ListView lv=(ListView)findViewById(R.id.lvNuclide);
 		lv.setAdapter(adapter);
+		if(!message.equals("")){
+			querynuclide(message);
+		}
 		
 	}
 	
@@ -49,6 +52,12 @@ public class NuclideSearchActivity extends Activity
 		//Toast.makeText(getApplicationContext(),sql,Toast.LENGTH_LONG).show();
 		runSQL(sql);
 	}
+	
+	private void querynuclide(String nuclide){
+		String sql="select * from nuclide where name='"+nuclide+"'";
+		runSQL(sql);
+	}
+	
 	
 	private void runSQL(String sql){
 		Cursor c = dbNuclides.rawQuery(sql, null);
@@ -61,7 +70,7 @@ public class NuclideSearchActivity extends Activity
 			String linetemplate="<b><sup>%d</sup>%s</b><br />T 1/2: %s <br/>"+getString(R.string.gammaLineProb)+" ";
 			do {
 				String Line;
-				String Name = c.getString(2);
+				// String Name = c.getString(2);
 				String thalf=MainActivity.formatthalf(c.getDouble(6),getApplicationContext());
 				Line=  String.format(linetemplate,c.getInt(4),c.getString(8),thalf);
 				String sql2 = "select energy,round(prob*100,"+probround+") as prob from line where nuclide='"+c.getString(1)+"' ";
@@ -78,7 +87,6 @@ public class NuclideSearchActivity extends Activity
 			adapter.notifyDataSetChanged();
 		}else{
 			Toast.makeText(getApplicationContext(),getString(R.string.noDataFound),Toast.LENGTH_LONG).show();
-			
 		}
 	}
 	

@@ -34,6 +34,7 @@ public class MainActivity extends Activity
 	ArrayList<String> listItems=new ArrayList<String>();
 	ArrayAdapter<String> adapter; // to keep data for the listview
 	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
+	public static String NUCLIDE_SEARCH="com.mortensickel.nuclidelib.SEARCH_NUCLIDE";
 	// second, minute, hour, day, year
 	// TODO: nuclide search
 	// DONE: Search button on keyboard
@@ -132,6 +133,7 @@ public class MainActivity extends Activity
 	
 	public void nuclideSearch(View v){
 		Intent intent=new Intent(this,NuclideSearchActivity.class);
+		intent.putExtra(NUCLIDE_SEARCH, "Cs137");
 		startActivity(intent);
 	}
 	
