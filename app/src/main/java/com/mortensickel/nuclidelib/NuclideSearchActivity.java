@@ -34,9 +34,10 @@ public class NuclideSearchActivity extends Activity
 		adapter=new ArrayAdapter<String>(NuclideSearchActivity.this,R.layout.listitem,listItems)
 		{ public View getView(int position, View view, ViewGroup viewGroup)
             {
-                View v = super.getView(position, view, viewGroup);
+                TextView v = (TextView)super.getView(position, view, viewGroup);
                 String n = this.getItem(position);
-                ((TextView)v).setText(Html.fromHtml(n));
+                v.setText(Html.fromHtml(n));
+				v.setTextIsSelectable(true);
 				return v;
             }};
 		ListView lv=(ListView)findViewById(R.id.lvNuclide);

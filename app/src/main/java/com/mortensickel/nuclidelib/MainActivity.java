@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import android.view.inputmethod.*;
 import android.widget.TextView.*;
 import android.content.Intent;
+import android.widget.AdapterView.*;
+import java.security.*;
 
 public class MainActivity extends Activity 
 {
@@ -112,6 +114,15 @@ public class MainActivity extends Activity
             }};
 		ListView lv=(ListView)findViewById(R.id.lvResult);
 		lv.setAdapter(adapter);
+		lv.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent,View v,int position, long id){
+				Intent intent=new Intent(MainActivity.this,NuclideSearchActivity.class);
+				String msg="Cs137";
+				intent.putExtra(NUCLIDE_SEARCH, msg);
+				startActivity(intent);
+			}
+		});
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
     }
 	
@@ -133,11 +144,15 @@ public class MainActivity extends Activity
 	
 	public void nuclideSearch(View v){
 		Intent intent=new Intent(this,NuclideSearchActivity.class);
-		intent.putExtra(NUCLIDE_SEARCH, "Cs137");
+		intent.putExtra(NUCLIDE_SEARCH, "");
 		startActivity(intent);
 	}
 	
-	
+	public void onClickList(View v){
+		Intent intent=new Intent(this,NuclideSearchActivity.class);
+		intent.putExtra(NUCLIDE_SEARCH, "Cs137");
+		startActivity(intent);
+	}
 	
 	private Float retnr(Integer r){
 		// returns a float from.the edittext - 0 if empty
