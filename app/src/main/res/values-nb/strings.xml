@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">nuclidelib</string>
+    <string name="app_name">Nuklidebibliotek</string>
     <string name="energy">Energi</string>
     <string name="lowprob">Lav sannsynlighet</string>
     <string name="search">Søk</string>

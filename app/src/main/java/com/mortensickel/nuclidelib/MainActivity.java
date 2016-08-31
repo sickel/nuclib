@@ -23,7 +23,7 @@ import android.widget.TextView.*;
 import android.content.Intent;
 import android.widget.AdapterView.*;
 import java.security.*;
-
+import java.util.regex.*;
 public class MainActivity extends Activity 
 {
 	
@@ -38,13 +38,15 @@ public class MainActivity extends Activity
 	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
 	public static String NUCLIDE_SEARCH="com.mortensickel.nuclidelib.SEARCH_NUCLIDE";
 	// second, minute, hour, day, year
-	// TODO: nuclide search
+	// DONE: nuclide search
 	// DONE: Search button on keyboard
 	// DONE: make strings into resources
 	// DONE: better display of result using listview
 	// DONE: Formatted strings in listview. 
-	// TODO: more info on nuclides
-	// TODO: half life cut off
+	// TODO: more info on nuclide
+	// DONE: framework for info. more info in db? using iaea app?
+	// DONE: half life cut off
+	// TODO: menu 
 	// TODO: user settable low prob value
 	// TODO: user settable rounding
 	// TODO: user settable default uncertainty
@@ -109,17 +111,24 @@ public class MainActivity extends Activity
             {
                 View v = super.getView(position, view, viewGroup);
                 String n = this.getItem(position);
-                ((TextView)v).setText(Html.fromHtml(n));
+                
+				((TextView)v).setText(Html.fromHtml(n));
 				return v;
             }};
 		ListView lv=(ListView)findViewById(R.id.lvResult);
 		lv.setAdapter(adapter);
 		lv.setOnItemClickListener(new OnItemClickListener(){
+			
+			Pattern p = Pattern.compile("<b>(.*?)</b>");
+			// nuclide is the first thing between b-tags
 			@Override
 			public void onItemClick(AdapterView<?> parent,View v,int position, long id){
 				Intent intent=new Intent(MainActivity.this,NuclideSearchActivity.class);
-				String msg="Cs137";
-				intent.putExtra(NUCLIDE_SEARCH, msg);
+			    String data=(String)parent.getItemAtPosition(position);
+				Matcher m = p.matcher(data);
+				m.find();
+				data=m.group(1);
+				intent.putExtra(NUCLIDE_SEARCH, data);
 				startActivity(intent);
 			}
 		});
@@ -174,7 +183,7 @@ public class MainActivity extends Activity
     {
 		//Button myBtn = (Button)findViewById(R.id.btSearch);
 		//v.requestFocus();
-		// TODO : hide keyboard
+		// TODO : hide keyboard when searching
 		float min = retnr(R.id.etFrom);
 		float max = retnr(R.id.etTo);
 		float thalf=retnr(R.id.etThalf);

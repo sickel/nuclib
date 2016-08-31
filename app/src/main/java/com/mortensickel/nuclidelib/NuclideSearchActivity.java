@@ -37,6 +37,7 @@ public class NuclideSearchActivity extends Activity
                 TextView v = (TextView)super.getView(position, view, viewGroup);
                 String n = this.getItem(position);
                 v.setText(Html.fromHtml(n));
+				// default not selectable to make it clickable
 				v.setTextIsSelectable(true);
 				return v;
             }};
