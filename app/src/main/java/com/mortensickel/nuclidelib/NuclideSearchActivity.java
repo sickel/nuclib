@@ -52,16 +52,28 @@ public class NuclideSearchActivity extends Activity
 	
 	private void runSQL(String sql){
 		Cursor c = dbNuclides.rawQuery(sql, null);
-		
+		int probround=2;
 		listItems.clear();
 		adapter.notifyDataSetChanged();
 		if (c != null && c.getCount()>0) {
 			c.moveToFirst();
-			String linetemplate="<b>%s</b><br />T 1/2: %s";
+			//String linetemplate="<b>%s</b><br />T 1/2: %s";
+			String linetemplate="<b><sup>%d</sup>%s</b><br />T 1/2: %s <br/>"+getString(R.string.gammaLineProb)+" ";
 			do {
+				String Line;
 				String Name = c.getString(2);
 				String thalf=MainActivity.formatthalf(c.getDouble(6),getApplicationContext());
-				listItems.add(String.format(linetemplate,Name,thalf));
+				Line=  String.format(linetemplate,c.getInt(4),c.getString(8),thalf);
+				String sql2 = "select energy,round(prob*100,"+probround+") as prob from line where nuclide='"+c.getString(1)+"' ";
+				sql2 +=" order by prob desc";
+				Cursor c2=dbNuclides.rawQuery(sql2,null);
+				c2.moveToFirst();
+				do{
+					String nrgy=c2.getString(0);
+					String GammaLine=nrgy+" ("+c2.getString(1)+"%) ";
+					Line+=GammaLine;
+				}while(c2.moveToNext());
+				listItems.add(Line);
 			}while(c.moveToNext());
 			adapter.notifyDataSetChanged();
 		}else{
