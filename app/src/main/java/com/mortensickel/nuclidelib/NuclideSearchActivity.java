@@ -70,7 +70,7 @@ public class NuclideSearchActivity extends Activity
 		adapter.notifyDataSetChanged();
 		if (c != null && c.getCount()>0) {
 			c.moveToFirst();
-			String linetemplate="<b><sup>%d</sup>%s</b><br />T 1/2: %s <br/>"+getString(R.string.gammaLineProb)+" ";
+			String linetemplate="<b><sup>%d</sup>%s</b><br />T<sub>1/2</sub>: %s <br/>"+getString(R.string.gammaLineProb)+" ";
 			do {
 				String thalf=MainActivity.formatthalf(c.getDouble(6),getApplicationContext());
 				String Line=  String.format(linetemplate,c.getInt(4),c.getString(8),thalf);
