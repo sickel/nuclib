@@ -16,7 +16,7 @@ def open_file(path):
         cur.execute("drop table if exists settings")
         cur.execute("create table settings(key varchar not null,\
         value varchar not null)")
-        cur.execute("insert into settings (key,value) values(\"Version\" , \"3\") ")
+        cur.execute("insert into settings (key,value) values(\"Version\" , \"4\") ")
         cur.execute("drop table if exists line")
         cur.execute("drop table if exists lines")
         cur.execute("create table line(id integer primary key, \
