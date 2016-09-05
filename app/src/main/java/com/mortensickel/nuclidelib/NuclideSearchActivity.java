@@ -58,7 +58,7 @@ public class NuclideSearchActivity extends Activity
 	}
 	
 	private void querynuclide(String nuclide){
-		String sql="select * from nuclide where name='"+nuclide+"'";
+		String sql="select halflife,A,element,longname,meta from nuclide where name='"+nuclide+"'";
 		runSQL(sql);
 	}
 	
@@ -70,12 +70,12 @@ public class NuclideSearchActivity extends Activity
 		adapter.notifyDataSetChanged();
 		if (c != null && c.getCount()>0) {
 			c.moveToFirst();
-			String linetemplate="<b><sup>%d</sup>%s</b><br />T<sub>1/2</sub>: %s <br/>"+getString(R.string.gammaLineProb)+" ";
+			String linetemplate="<b><sup>%s</sup>%s</b><br />T<sub>1/2</sub>: %s <br/>"+getString(R.string.gammaLineProb)+" ";
 			do {
-				String thalf=MainActivity.formatthalf(c.getDouble(6),getApplicationContext());
-				String Line=  String.format(linetemplate,c.getInt(4),c.getString(8),thalf);
+				String thalf=MainActivity.formatthalf(c.getDouble(0),getApplicationContext());
+				String Line=  String.format(linetemplate,c.getString(1)+c.getString(4),c.getString(2),thalf);
 				// TODO: fix display of metastables
-				String sql2 = "select energy,round(prob*100,"+probround+") as prob from line where nuclide='"+c.getString(1)+"' ";
+				String sql2 = "select energy,round(prob*100,"+probround+") as prob from line where nuclide='"+c.getString(3)+"' ";
 				sql2 +=" order by prob desc";
 				Cursor c2=dbNuclides.rawQuery(sql2,null);
 				if (c2 != null && c2.getCount()>0){
@@ -95,7 +95,7 @@ public class NuclideSearchActivity extends Activity
 	}
 	
 	private String SQLFromForm(){
-		String sql="select * from nuclide";
+		String sql="select halflife,A,element,longname,meta  from nuclide";
 		String whereinit =" where ";
 		String where=whereinit;
 		String Element=((TextView)findViewById(R.id.etElement)).getText().toString();
