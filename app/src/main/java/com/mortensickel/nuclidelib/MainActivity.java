@@ -29,7 +29,7 @@ public class MainActivity extends Activity
 	
 	public String DB_PATH = null;
     public final static String DB_NAME = "nuclides.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private SQLiteDatabase dbNuclides;
 	public Double lowprobCutoff=0.01;
     public int energyround=1;

@@ -23,4 +23,7 @@
 	<string name="gammaLineProb">Gammaenergier i keV (sannsynlighet): </string>
 	<string name="nucsearch">Nuklidesøk</string>
 	<string name="backarrow">&lt;-</string>
+    <string name="percent">%</string>
+    <string name="lowprobCutoff">Grense for å ignorer linjer (%)</string>
+    <string name="settings">Innstillinger</string>
 </resources>
