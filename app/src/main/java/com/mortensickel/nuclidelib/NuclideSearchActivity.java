@@ -16,12 +16,13 @@ public class NuclideSearchActivity extends Activity
 	private static String DB_NAME="nuclides.db";
 	private ArrayList<String> listItems=new ArrayList<String>();
 	private ArrayAdapter<String> adapter; // to keep data for the listview
-	private final String basesql="select longname,element,A,halflife,meta from nuclide ";
+	private final String basesql="select longname,element,A,halflife,meta, ref from nuclide ";
 	private final int SQL_LONGNAME=0;
 	private final int SQL_ELEMENT=1;
 	private final int SQL_A=2;
 	private final int SQL_THALF=3;
 	private final int SQL_META=4;
+	private final int SQL_REF=5;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +77,10 @@ public class NuclideSearchActivity extends Activity
 		adapter.notifyDataSetChanged();
 		if (c != null && c.getCount()>0) {
 			c.moveToFirst();
-			String linetemplate="<b><sup>%s</sup>%s</b><br />T<sub>1/2</sub>: %s <br/>"+getString(R.string.gammaLineProb)+" ";
+			String linetemplate="<b><sup>%s</sup>%s</b><br />T<sub>1/2</sub>: %s (%s) <br/>"+getString(R.string.gammaLineProb)+" ";
 			do {
 				String thalf=MainActivity.formatthalf(c.getDouble(SQL_THALF),getApplicationContext());
-				String Line=  String.format(linetemplate,c.getString(SQL_A)+c.getString(SQL_META),c.getString(SQL_ELEMENT),thalf);
+				String Line=  String.format(linetemplate,c.getString(SQL_A)+c.getString(SQL_META),c.getString(SQL_ELEMENT),thalf,c.getString(SQL_REF));
 				// TODO: fix display of metastables
 				String sql2 = "select energy,round(prob*100,"+probround+") as prob from line where nuclide='"+c.getString(SQL_LONGNAME)+"' ";
 				sql2 +=" order by prob desc";
