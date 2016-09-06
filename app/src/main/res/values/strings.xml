@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">nuclidelib</string>
+    <string name="app_name">Nuclide Library</string>
     <string name="energy">Energy</string>
 	<string name="lowprob">Low Prob</string>
     <string name="search">Search</string>
@@ -19,4 +18,13 @@
 	<string name="ioErrorDatabase">io error - could not copy database</string>
 	<string name="copy_asset_error">Failed to copy asset file: </string>
 	<string name="databaseCopied">database copied</string>
+	<string name="errCreateFolder">could not create folder</string>
+	<string name="nuclide">Nuclide</string>
+	<string name="massnumber">Mass number</string>
+	<string name="element">Element</string>
+	<string name="noDataFound">No data.found</string>
+	<string name="gammaLineProb">Gamma line (probability) keV: </string>
+	<string name="backarrow">&lt;-</string>
+	<string name="nucsearch">Nuclide search</string>
 </resources>
+	
