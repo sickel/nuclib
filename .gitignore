@@ -3,3 +3,4 @@ build/*
 *.class
 *.apk
 *.dex
+*.db-journal
