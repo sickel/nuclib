@@ -12,6 +12,9 @@
     <string name="keV">keV</string>
     <string name="mint12">min t½</string>
     <string name="kev_plusminus">keV ±</string>
+    <string name="percent">%</string>
+    <string name="lowprobCutoff">Grense for å ignorer linjer (%)</string>
+    <string name="settings">Innstillinger</string>
 	<string name="ioErrorDatabase">Kunne ikke kopiere database</string>
 	<string name="copy_asset_error">Kunne ikke kopiere fil: </string>
 	<string name="databaseCopied">Database kopiert</string>
@@ -23,7 +26,4 @@
 	<string name="gammaLineProb">Gammaenergier i keV (sannsynlighet): </string>
 	<string name="nucsearch">Nuklidesøk</string>
 	<string name="backarrow">&lt;-</string>
-    <string name="percent">%</string>
-    <string name="lowprobCutoff">Grense for å ignorer linjer (%)</string>
-    <string name="settings">Innstillinger</string>
 </resources>
