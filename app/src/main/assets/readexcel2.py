@@ -67,7 +67,7 @@ def open_file(path):
                 print longname
                 cur.execute("insert into nuclide (longname,name,A,Z,N,element,halflife) values(?,?,?,?,?,?,?)",[longname,name,A,Z,N,elem,thalf])
             #print data
-                prob=float(sheet.cell(row,3).value)
+                prob=float(sheet.cell(row,3).value)/100
                 cur.execute("INSERT into line (nuclide,energy,prob,comment) values(?,?,?,?)",[longname,energy,prob,sheet.cell(row,1).value])
             else:
                 if(rows[0][1]==None):
