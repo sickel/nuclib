@@ -20,6 +20,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="50dp"
 			android:ems="10"
+			android:inputType="text"
 			android:id="@+id/etElement"/>
 
 		<TextView

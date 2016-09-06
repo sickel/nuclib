@@ -1,19 +1,24 @@
 package com.mortensickel.nuclidelib;
-import android.app.*;
-import android.os.*;
-import android.database.sqlite.*;
-import android.database.Cursor;
-import android.widget.TextView;
-import android.widget.*;
-import android.view.*;
-import java.util.ArrayList;
-import android.text.*;
+
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.text.Html;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class NuclideSearchActivity extends Activity
 {
 	private SQLiteDatabase dbNuclides;
-	private static String DB_NAME="nuclides.db";
+	private static final String DB_NAME="nuclides.db";
 	private ArrayList<String> listItems=new ArrayList<String>();
 	private ArrayAdapter<String> adapter; // to keep data for the listview
 	private final String basesql="select longname,element,A,halflife,meta, ref from nuclide ";
@@ -92,9 +97,11 @@ public class NuclideSearchActivity extends Activity
 					String GammaLine=nrgy+" ("+c2.getString(1)+"%) ";
 					Line+=GammaLine;
 				}while(c2.moveToNext());
+					c2.close();
 				}
 				listItems.add(Line);
 			}while(c.moveToNext());
+			c.close();
 			adapter.notifyDataSetChanged();
 		}else{
 			Toast.makeText(getApplicationContext(),getString(R.string.noDataFound),Toast.LENGTH_LONG).show();

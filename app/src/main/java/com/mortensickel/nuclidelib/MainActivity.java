@@ -1,42 +1,52 @@
 package com.mortensickel.nuclidelib;
 
-import android.app.*;
-import android.os.*;
-import android.widget.EditText;
-import android.text.*;
-import android.widget.*; 
-import android.view.*;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.*;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.io.File;
 import java.io.RandomAccessFile;
-import android.util.*;
 import java.util.ArrayList;
-import android.view.inputmethod.*;
-import android.widget.TextView.*;
-import android.content.Intent;
-import android.widget.AdapterView.*;
-import java.security.*;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class MainActivity extends Activity 
 {
 	
-	public String DB_PATH = null;
-    public final static String DB_NAME = "nuclides.db";
+	private String DB_PATH = null;
+    private final static String DB_NAME = "nuclides.db";
     private static final int DB_VERSION = 4;
     private SQLiteDatabase dbNuclides;
-	public Double lowprobCutoff=0.01;
-    public int energyround=1;
-	ArrayList<String> listItems=new ArrayList<String>();
-	ArrayAdapter<String> adapter; // to keep data for the listview
-	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
-	public static String NUCLIDE_SEARCH="com.mortensickel.nuclidelib.SEARCH_NUCLIDE";
+	private Double lowprobCutoff=0.01;
+    private int energyround=1;
+	private ArrayList<String> listItems=new ArrayList<String>();
+	private ArrayAdapter<String> adapter; // to keep data for the listview
+	private final Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
+	public static final String NUCLIDE_SEARCH="com.mortensickel.nuclidelib.SEARCH_NUCLIDE";
 	// second, minute, hour, day, year
 	// DONE: nuclide search
 	// DONE: Search button on keyboard
@@ -57,8 +67,7 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-		// String datadir=getApplicationInfo().dataDir;
-		DB_PATH = "/data/data/" + this.getPackageName() + "/databases/";
+		DB_PATH = this.getFilesDir().getPath() + "/databases/";
 		try {copyDatabase();}
 		catch(Exception e){
 			Log.e("tag", getString(R.string.copy_asset_error)+ DB_NAME, e);	
@@ -103,8 +112,8 @@ public class MainActivity extends Activity
 				} 
 
 				public void onNothingSelected(AdapterView<?> adapterView) {
-					return;
-				} 
+
+				}
 			}); 
 		adapter=new ArrayAdapter<String>(MainActivity.this,R.layout.listitem,listItems)
 		{ public View getView(int position, View view, ViewGroup viewGroup)
@@ -119,7 +128,7 @@ public class MainActivity extends Activity
 		lv.setAdapter(adapter);
 		lv.setOnItemClickListener(new OnItemClickListener(){
 			
-			Pattern p = Pattern.compile("<b>(.*?)</b>");
+			final Pattern p = Pattern.compile("<b>(.*?)</b>");
 			// nuclide is the first thing between b-tags
 			@Override
 			public void onItemClick(AdapterView<?> parent,View v,int position, long id){
@@ -154,12 +163,6 @@ public class MainActivity extends Activity
 	public void nuclideSearch(View v){
 		Intent intent=new Intent(this,NuclideSearchActivity.class);
 		intent.putExtra(NUCLIDE_SEARCH, "");
-		startActivity(intent);
-	}
-	
-	public void onClickList(View v){
-		Intent intent=new Intent(this,NuclideSearchActivity.class);
-		intent.putExtra(NUCLIDE_SEARCH, "Cs137");
 		startActivity(intent);
 	}
 	
@@ -228,8 +231,10 @@ public class MainActivity extends Activity
 					String GammaLine=nrgy+" ("+c2.getString(1)+"%) ";
 					Line+=GammaLine;
 				}while(c2.moveToNext());
-				listItems.add(Line);}
+				listItems.add(Line);
+                c2.close();}
 			while(c.moveToNext());
+            c.close();
 		}else{
 			Toast.makeText(this, getString(R.string.noDataFound), Toast.LENGTH_LONG).show();
 			
@@ -264,10 +269,9 @@ public static String formatthalf(Double thalf,Context c){
     /**
      * Copy DB from ASSETS
      */
-	
 
 
-public void copyDatabase() throws Exception {
+    private void copyDatabase() throws Exception {
 	File folder = new File(DB_PATH);
 	boolean success = true;
 	if (!folder.exists()) {
@@ -310,13 +314,13 @@ public void copyDatabase() throws Exception {
 	}
  }
 
-void saveDbVersion(File dbversion) throws Exception {
+private void saveDbVersion(File dbversion) throws Exception {
 	FileOutputStream out = new FileOutputStream(dbversion);
     out.write(Integer.toString(DB_VERSION).getBytes());
     out.close();
 }	
 	
-Integer readDbVersion(File dbversion) throws Exception{
+private Integer readDbVersion(File dbversion) throws Exception{
 	RandomAccessFile f = new RandomAccessFile(dbversion, "r");
         byte[] bytes = new byte[(int) f.length()];
         f.readFully(bytes);
