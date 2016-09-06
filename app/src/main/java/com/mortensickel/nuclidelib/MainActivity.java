@@ -85,7 +85,7 @@ public class MainActivity extends Activity
 					onClickSearch(v);
 					return true;
 				}
-				return false;
+				return false; 
 			}};
 		etEnergy.addTextChangedListener(tw);
 		etEnergy.setOnEditorActionListener(oeal);
