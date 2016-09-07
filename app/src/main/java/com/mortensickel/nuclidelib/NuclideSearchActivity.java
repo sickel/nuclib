@@ -74,7 +74,7 @@ public class NuclideSearchActivity extends Activity
 	
 	
 	private void runSQL(String sql){
-		
+		//TODO check if sql already has an order by
 		sql=sql+" order by z,n";
 		Cursor c = dbNuclides.rawQuery(sql, null);
 		int probround=2;

@@ -43,6 +43,16 @@
 			android:layout_width="wrap_content"
 			android:entries="@array/saVartype"
 			android:id="@+id/SpUncerttype"/>
+		
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="@string/nucsearch"
+			android:onClick="nuclideSearch"
+			android:id="@+id/btNuclide"
+		   
+android:visibility="gone"/>
+		
 
 	</LinearLayout>
 
@@ -111,13 +121,7 @@
 			android:entries="@array/saHalflife"
 			android:id="@+id/spThalf"/>
 
-		<Button
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:text="@string/nucsearch"
-			android:onClick="nuclideSearch"
-			android:id="@+id/btNuclide"/>
-
+		
 	</LinearLayout>
 
 	<LinearLayout

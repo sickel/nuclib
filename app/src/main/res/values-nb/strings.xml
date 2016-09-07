@@ -30,5 +30,6 @@
 	<string name="appAbout">Library on gamma energies. Searchable for an energy range or per nuclide. Source code available at https://github.com/sickel/nuclib</string>
 	<string name="appCredit">Decaydata from https://www.cpp.edu/~pbsiegel/bio431/genergies.html (pbsiegel) and https://www-nds.iaea.org/xgamma_standards/genergies1.htm (IAEA). When data have been available from both sources, IAEA data have been used.</string>
 	<string name="versionText">Version: %s</string>
-	
+	<string name="rounding">Number of decimals</string>
+	<string name="defWidth">Default width</string>
 	</resources>

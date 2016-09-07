@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.mortensickel.nuclidelib"
-        minSdkVersion 14
+        minSdkVersion 17
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 13
+        versionName "1.3"
     }
     buildTypes {
         release {
@@ -20,5 +20,7 @@ android {
 }
 
 dependencies {
+	//compile 'com.android.support:preference-leanback-v17:+'
+	//compile 'com.android.support:preference-v14:+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

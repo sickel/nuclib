@@ -25,6 +25,10 @@ import android.content.Intent;
 import android.widget.AdapterView.*;
 import java.security.*;
 import java.util.regex.*;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
+import android.content.*;
+import android.preference.*;
 public class MainActivity extends Activity 
 {
 	
@@ -51,7 +55,7 @@ public class MainActivity extends Activity
 	// TODO: user settable low prob value
 	// TODO: user settable rounding
 	// TODO: user settable default uncertainty
-	// TODO: link to iaea web pages
+	// DONE: link to iaea web pages
 	
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -134,7 +138,14 @@ public class MainActivity extends Activity
 			}
 		});
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
-    }
+		loadPref();
+		  }
+	private void loadPref(){
+		SharedPreferences shpref=PreferenceManager.getDefaultSharedPreferences(this);
+		
+	}
+	
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -148,17 +159,32 @@ public class MainActivity extends Activity
         switch (item.getItemId()) {  
             case R.id.mnuLowprob:  
 				Toast.makeText(getApplicationContext(),"Set lowprob",Toast.LENGTH_LONG).show();  
+				Intent intent=new Intent();
+				intent.setClass(MainActivity.this,SetPreferenceActivity.class);
+				startActivityForResult(intent,0);
 				return true;     
 			case R.id.mnuAbout:  
               //  Toast.makeText(getApplicationContext(),"About",Toast.LENGTH_LONG).show();
 				showAbout();
-				return true;        
+				return true; 
+			case R.id.mnuNuclidesearch:
+				nuclideSearch(null);
 			default:  
                 return super.onOptionsItemSelected(item);  
         }  
    
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		// TODO: Implement this method
+		super.onActivityResult(requestCode, resultCode, data);
+		Toast.makeText(getApplicationContext(),"Back!",Toast.LENGTH_LONG).show();  
+		
 	}  
 	
+
 	protected void showAbout() {
         // Inflate the about message contents
         View messageView = getLayoutInflater().inflate(R.layout.about, null, false);
@@ -379,4 +405,9 @@ Integer readDbVersion(File dbversion) throws Exception{
 		//return(1);
 	}
 
-}
+
+	
+	
+
+	
+	}
