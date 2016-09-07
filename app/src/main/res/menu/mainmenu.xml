@@ -2,5 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <item android:id="@+id/mnuLowprob"
     android:title="@string/settings" />
-
+<item android:id="@+id/mnuAbout"
+	android:title="@string/about" />
 </menu>

@@ -135,6 +135,47 @@ public class MainActivity extends Activity
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
     }
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mainmenu, menu);
+		return true;
+	}
+	
+	@Override  
+    public boolean onOptionsItemSelected(MenuItem item) {  
+        switch (item.getItemId()) {  
+            case R.id.mnuLowprob:  
+				Toast.makeText(getApplicationContext(),"Set lowprob",Toast.LENGTH_LONG).show();  
+				return true;     
+			case R.id.mnuAbout:  
+              //  Toast.makeText(getApplicationContext(),"About",Toast.LENGTH_LONG).show();
+				showAbout();
+				return true;        
+			default:  
+                return super.onOptionsItemSelected(item);  
+        }  
+   
+	}  
+	
+	protected void showAbout() {
+        // Inflate the about message contents
+        View messageView = getLayoutInflater().inflate(R.layout.about, null, false);
+
+        // When linking text, force to always use default color. This works
+        // around a pressed color state bug.
+        TextView textView = (TextView) messageView.findViewById(R.id.about_credits);
+        int defaultColor = textView.getTextColors().getDefaultColor();
+       // textView.setTextColor(defaultColor);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.spectrum);
+        builder.setTitle(R.string.app_name);
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
+    }
+	
 	private void calcFromTo(){
 		float energy = retnr(R.id.etEnergy);
 		float uncert = retnr(R.id.etUncert);
@@ -199,6 +240,7 @@ public class MainActivity extends Activity
 		if(thalf>0){
 			sql+=" and halflife >="+thalf;
 		}
+		sql+=" order by z,a";
 		Cursor c = dbNuclides.rawQuery(sql, null);
 		c.moveToFirst();
 		listItems.clear();
@@ -223,6 +265,7 @@ public class MainActivity extends Activity
 				do{
 					String nrgy=c2.getString(0);
 					if(c2.getFloat(0) >=min && c2.getFloat(0)<=max){
+						// marks the found lines
 						nrgy="<b>"+nrgy+"</b>";
 					}
 					String GammaLine=nrgy+" ("+c2.getString(1)+"%) ";

@@ -67,10 +67,12 @@ public class NuclideSearchActivity extends Activity
 	private void querynuclide(String nuclide){
 		String sql=basesql + "where name='"+nuclide+"'";
 		runSQL(sql);
-	}
+	} 
 	
 	
 	private void runSQL(String sql){
+		
+		sql=sql+" order by z,n";
 		Cursor c = dbNuclides.rawQuery(sql, null);
 		int probround=2;
 		listItems.clear();

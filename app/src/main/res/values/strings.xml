@@ -26,5 +26,9 @@
 	<string name="gammaLineProb">Gamma line (probability) keV: </string>
 	<string name="backarrow">&lt;-</string>
 	<string name="nucsearch">Nuclide search</string>
+	<string name="about">About</string>
+	<string name="appAbout">About text comes here...</string>
+	<string name="appCredit">Credits come here...</string>
+	
 </resources>
 	

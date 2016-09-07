@@ -19,4 +19,7 @@
 	<string name="databaseCopied">database copied</string>
 	<string name="noDataFound">No data.found</string>
 	<string name="gammaLineProb">Gammaline (probability):</string>
+	<string name="about">About</string>
+	<string name="appAbout">About text comes here...</string>
+	<string name="appCredit">Credits come here...</string>
 </resources>
