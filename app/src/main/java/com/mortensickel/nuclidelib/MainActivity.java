@@ -7,6 +7,7 @@ import android.text.*;
 import android.widget.*; 
 import android.view.*;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.database.sqlite.*;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -33,7 +34,7 @@ public class MainActivity extends Activity
     private SQLiteDatabase dbNuclides;
 	public Double lowprobCutoff=0.01;
     public int energyround=1;
-	ArrayList<String> listItems=new ArrayList<String>();
+	ArrayList<String> listItems=new ArrayList<>();
 	ArrayAdapter<String> adapter; // to keep data for the listview
 	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
 	public static String NUCLIDE_SEARCH="com.mortensickel.nuclidelib.SEARCH_NUCLIDE";
@@ -167,7 +168,16 @@ public class MainActivity extends Activity
         TextView textView = (TextView) messageView.findViewById(R.id.about_credits);
         int defaultColor = textView.getTextColors().getDefaultColor();
        // textView.setTextColor(defaultColor);
-
+	    try{
+		PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+		String version = pInfo.versionName;
+		textView=(TextView)messageView.findViewById(R.id.tvVersion);
+		textView.setText(version);
+		}
+		catch(Exception e){
+			// really dosn't matter if it fails
+		}
+		
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.spectrum);
         builder.setTitle(R.string.app_name);
