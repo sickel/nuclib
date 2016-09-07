@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<EditTextPreference 
+		android:key="pref_key_lowprobcutoff"
+		android:inputType="number"
+		android:summary="@string/lowprobCutoff"
+		android:defaultValue="1"
+		/>
+	<EditTextPreference 
+	android:key="pref_key_rounding"
+		android:inputType="number"
+	android:summary="@string/rounding"
+		android:defaultValue="4"
+	/>
+	<EditTextPreference 
+	android:key="pref_key_uncert"
+		android:inputType="number"
+	android:summary="@string/defWidth"
+		android:defaultValue="5"
+	/>
+		</PreferenceScreen>

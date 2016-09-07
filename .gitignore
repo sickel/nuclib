@@ -8,4 +8,4 @@ build/*
 R.java
 gen/*
 ic_launcher.png
-
+BuildConfig.java

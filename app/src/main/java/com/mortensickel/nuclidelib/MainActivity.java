@@ -7,6 +7,7 @@ import android.text.*;
 import android.widget.*; 
 import android.view.*;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.database.sqlite.*;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -24,6 +25,10 @@ import android.content.Intent;
 import android.widget.AdapterView.*;
 import java.security.*;
 import java.util.regex.*;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
+import android.content.*;
+import android.preference.*;
 public class MainActivity extends Activity 
 {
 	
@@ -33,7 +38,7 @@ public class MainActivity extends Activity
     private SQLiteDatabase dbNuclides;
 	public Double lowprobCutoff=0.01;
     public int energyround=1;
-	ArrayList<String> listItems=new ArrayList<String>();
+	ArrayList<String> listItems=new ArrayList<>();
 	ArrayAdapter<String> adapter; // to keep data for the listview
 	private Integer[] timefactors={1,60,3600,24*3600,36524*24*36};
 	public static String NUCLIDE_SEARCH="com.mortensickel.nuclidelib.SEARCH_NUCLIDE";
@@ -50,7 +55,7 @@ public class MainActivity extends Activity
 	// TODO: user settable low prob value
 	// TODO: user settable rounding
 	// TODO: user settable default uncertainty
-	// TODO: link to iaea web pages
+	// DONE: link to iaea web pages
 	
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -133,6 +138,110 @@ public class MainActivity extends Activity
 			}
 		});
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
+		loadPref();
+		  }
+		private void loadPref(){
+		SharedPreferences shpref=PreferenceManager.getDefaultSharedPreferences(this);
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+			
+		
+		}
+
+		@Override
+		public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+		{
+			// TODO: Implement this method
+			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+
+		@Override
+		protected void onResume()
+		{
+			// TODO: Implement this method
+			super.onResume();
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+	//		lowprobCutoff = (double)sharedPref.getFloat("pref_key_lowprobcutoff", 1)/100;
+			readPrefs();
+			//XlowprobCutoff=
+		}
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.mainmenu, menu);
+		return true;
+	}
+	
+	@Override  
+    public boolean onOptionsItemSelected(MenuItem item) {  
+        switch (item.getItemId()) {  
+            case R.id.mnuLowprob:  
+				//Toast.makeText(getApplicationContext(),"Set lowprob",Toast.LENGTH_LONG).show();  
+				Intent intent=new Intent();
+				intent.setClass(MainActivity.this,SetPreferenceActivity.class);
+				startActivityForResult(intent,0);
+				return true;     
+			case R.id.mnuAbout:  
+              //  Toast.makeText(getApplicationContext(),"About",Toast.LENGTH_LONG).show();
+				showAbout();
+				return true; 
+			case R.id.mnuNuclidesearch:
+				nuclideSearch(null);
+			default:  
+                return super.onOptionsItemSelected(item);  
+        }  
+   
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		// TODO: Implement this method
+		super.onActivityResult(requestCode, resultCode, data);
+		//Toast.makeText(getApplicationContext(),"Back!",Toast.LENGTH_LONG).show();
+		readPrefs();
+	}  
+	
+	private void readPrefs(){
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		String ret=sharedPref.getString("pref_key_lowprobcutoff", "1");
+		lowprobCutoff = Double.parseDouble(ret)/100;
+		ret=sharedPref.getString("pref_key_rounding","4");
+		energyround=Integer.parseInt(ret);
+		ret=sharedPref.getString("pref_key_uncert","5");
+		EditText et=(EditText)findViewById(R.id.etUncert);
+		et.setText(ret);
+	}
+	
+
+	protected void showAbout() {
+        // Inflate the about message contents
+        View messageView = getLayoutInflater().inflate(R.layout.about, null, false);
+
+        // When linking text, force to always use default color. This works
+        // around a pressed color state bug.
+        TextView textView = (TextView) messageView.findViewById(R.id.about_credits);
+      //  int defaultColor = textView.getTextColors().getDefaultColor();
+       // textView.setTextColor(defaultColor);
+	    try{
+		PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+		String version = this.getText(R.string.versionText).toString();
+		version=String.format(version,pInfo.versionName);
+		textView=(TextView)messageView.findViewById(R.id.tvVersion);
+		textView.setText(version);
+		}
+		catch(Exception e){
+			// really dosn't matter if it fails
+		}
+		
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.spectrum);
+        builder.setTitle(R.string.app_name);
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
     }
 	
 	private void calcFromTo(){
@@ -199,6 +308,7 @@ public class MainActivity extends Activity
 		if(thalf>0){
 			sql+=" and halflife >="+thalf;
 		}
+		sql+=" order by z,a";
 		Cursor c = dbNuclides.rawQuery(sql, null);
 		c.moveToFirst();
 		listItems.clear();
@@ -223,6 +333,7 @@ public class MainActivity extends Activity
 				do{
 					String nrgy=c2.getString(0);
 					if(c2.getFloat(0) >=min && c2.getFloat(0)<=max){
+						// marks the found lines
 						nrgy="<b>"+nrgy+"</b>";
 					}
 					String GammaLine=nrgy+" ("+c2.getString(1)+"%) ";
@@ -325,4 +436,9 @@ Integer readDbVersion(File dbversion) throws Exception{
 		//return(1);
 	}
 
-}
+
+	
+	
+
+	
+	}

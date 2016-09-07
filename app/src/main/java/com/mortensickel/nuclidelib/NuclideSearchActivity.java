@@ -9,6 +9,8 @@ import android.view.*;
 import java.util.ArrayList;
 import android.text.*;
 import android.content.Intent;
+import java.util.regex.*;
+
 
 public class NuclideSearchActivity extends Activity
 {
@@ -31,13 +33,7 @@ public class NuclideSearchActivity extends Activity
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
     
 		Intent intent = getIntent();
-		String message = intent.getStringExtra(MainActivity.NUCLIDE_SEARCH);
-		/*TextView textView = new TextView(this);
-		textView.setTextSize(40);
-		textView.setText(message);
-		ViewGroup layout = (ViewGroup) findViewById(R.id.llHolder);
-		layout.addView(textView);*/
-		
+		String message = intent.getStringExtra(MainActivity.NUCLIDE_SEARCH);	
 		adapter=new ArrayAdapter<String>(NuclideSearchActivity.this,R.layout.listitem,listItems)
 		{ public View getView(int position, View view, ViewGroup viewGroup)
             {
@@ -51,6 +47,13 @@ public class NuclideSearchActivity extends Activity
 		ListView lv=(ListView)findViewById(R.id.lvNuclide);
 		lv.setAdapter(adapter);
 		if(!message.equals("")){
+			Pattern p = Pattern.compile("([A-Z][a-z]?)([0-9]+)");
+			Matcher m = p.matcher(message);
+			m.find();
+			String e=m.group(1);
+			((TextView)findViewById(R.id.etElement)).setText(e);
+			String n=m.group(2);
+			((TextView)findViewById(R.id.etMassnumber)).setText(n);
 			querynuclide(message);
 		}
 		
@@ -67,10 +70,12 @@ public class NuclideSearchActivity extends Activity
 	private void querynuclide(String nuclide){
 		String sql=basesql + "where name='"+nuclide+"'";
 		runSQL(sql);
-	}
+	} 
 	
 	
 	private void runSQL(String sql){
+		//TODO check if sql already has an order by
+		sql=sql+" order by z,n";
 		Cursor c = dbNuclides.rawQuery(sql, null);
 		int probround=2;
 		listItems.clear();
