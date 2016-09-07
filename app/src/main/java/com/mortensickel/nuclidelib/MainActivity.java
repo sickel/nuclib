@@ -140,10 +140,30 @@ public class MainActivity extends Activity
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
 		loadPref();
 		  }
-	private void loadPref(){
+		private void loadPref(){
 		SharedPreferences shpref=PreferenceManager.getDefaultSharedPreferences(this);
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+			
 		
-	}
+		}
+
+		@Override
+		public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+		{
+			// TODO: Implement this method
+			super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+
+		@Override
+		protected void onResume()
+		{
+			// TODO: Implement this method
+			super.onResume();
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+	//		lowprobCutoff = (double)sharedPref.getFloat("pref_key_lowprobcutoff", 1)/100;
+			readPrefs();
+			//XlowprobCutoff=
+		}
 	
 	
 	
@@ -158,7 +178,7 @@ public class MainActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {  
         switch (item.getItemId()) {  
             case R.id.mnuLowprob:  
-				Toast.makeText(getApplicationContext(),"Set lowprob",Toast.LENGTH_LONG).show();  
+				//Toast.makeText(getApplicationContext(),"Set lowprob",Toast.LENGTH_LONG).show();  
 				Intent intent=new Intent();
 				intent.setClass(MainActivity.this,SetPreferenceActivity.class);
 				startActivityForResult(intent,0);
@@ -180,9 +200,20 @@ public class MainActivity extends Activity
 	{
 		// TODO: Implement this method
 		super.onActivityResult(requestCode, resultCode, data);
-		Toast.makeText(getApplicationContext(),"Back!",Toast.LENGTH_LONG).show();  
-		
+		//Toast.makeText(getApplicationContext(),"Back!",Toast.LENGTH_LONG).show();
+		readPrefs();
 	}  
+	
+	private void readPrefs(){
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		String ret=sharedPref.getString("pref_key_lowprobcutoff", "1");
+		lowprobCutoff = Double.parseDouble(ret)/100;
+		ret=sharedPref.getString("pref_key_rounding","4");
+		energyround=Integer.parseInt(ret);
+		ret=sharedPref.getString("pref_key_uncert","5");
+		EditText et=(EditText)findViewById(R.id.etUncert);
+		et.setText(ret);
+	}
 	
 
 	protected void showAbout() {
