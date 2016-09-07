@@ -166,11 +166,12 @@ public class MainActivity extends Activity
         // When linking text, force to always use default color. This works
         // around a pressed color state bug.
         TextView textView = (TextView) messageView.findViewById(R.id.about_credits);
-        int defaultColor = textView.getTextColors().getDefaultColor();
+      //  int defaultColor = textView.getTextColors().getDefaultColor();
        // textView.setTextColor(defaultColor);
 	    try{
 		PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-		String version = pInfo.versionName;
+		String version = this.getText(R.string.versionText).toString();
+		version=String.format(version,pInfo.versionName);
 		textView=(TextView)messageView.findViewById(R.id.tvVersion);
 		textView.setText(version);
 		}

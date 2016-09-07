@@ -29,6 +29,7 @@
 	<string name="about">About</string>
 	<string name="appAbout">About text comes here...</string>
 	<string name="appCredit">Credits come here...</string>
+	<string name="versionText">Version: %s</string>
 	
 </resources>
 	
