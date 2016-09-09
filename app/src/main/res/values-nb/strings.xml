@@ -32,4 +32,5 @@
 	<string name="versionText">Version: %s</string>
 	<string name="rounding">Number of decimals</string>
 	<string name="defWidth">Default width</string>
+	<string name="appCopyright">(c) Morten Sickel 2016 licenced under GPL v2 or later</string>
 	</resources>

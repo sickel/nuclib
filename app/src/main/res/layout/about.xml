@@ -14,7 +14,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 		android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="@string/appAbout"/>
+     />
 	
 	<TextView
         android:layout_width="match_parent"
@@ -33,5 +33,14 @@ http://www.apache.org/licenses/LICENSE-2.0
         android:text="@string/appCredit"
         android:autoLink="web"
         />
-
+	<TextView
+        android:id="@+id/aboutCopyright"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dip"
+        android:textSize="16sp"
+        android:text="@string/appCopyright"
+        android:autoLink="web"
+	/>
+	
 </LinearLayout>
