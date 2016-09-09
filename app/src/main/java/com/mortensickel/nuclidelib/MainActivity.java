@@ -368,7 +368,7 @@ public static String formatthalf(Double thalf,Context c){
 			}
 		}
 	}
-	return String.format("%.5g %s",thalf, Unit);
+	return String.format("%.4g %s",thalf, Unit);
 } 
 	
 

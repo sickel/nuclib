@@ -5,17 +5,17 @@ Information from https://www-nds.iaea.org/xgamma_standards/genergies1.htm and ht
 
 This app is provided 'as-is' the autor takes no responsibilities for any types of damages caused by bugs or other problems with the app 
 
+ 
+ (c) Morten Sickel 2016 licenced under GPL v2 or later
 
-__Planned development:__
+_
+_Planned development:__
 
-* nuclide search
+
 
 * more info on nuclides
-
-* user settable low probability cutoff value
 
 * User settable rounding
 
 * User settable default uncertainty
 
-* Link to iaea web pages
