@@ -138,14 +138,15 @@ public class MainActivity extends Activity
 			}
 		});
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
-		loadPref();
-		  }
-		private void loadPref(){
-		SharedPreferences shpref=PreferenceManager.getDefaultSharedPreferences(this);
-		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-			
-		
-		}
+		loadPref(this);
+	}
+		  
+		  
+		 
+	public void loadPref(Context ctx){
+		SharedPreferences shpref=PreferenceManager.getDefaultSharedPreferences(ctx);
+		PreferenceManager.setDefaultValues(ctx, R.xml.preferences, false);
+	}
 
 		@Override
 		public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
@@ -187,6 +188,9 @@ public class MainActivity extends Activity
               //  Toast.makeText(getApplicationContext(),"About",Toast.LENGTH_LONG).show();
 				showAbout();
 				return true; 
+			case R.id.mnuHelp:
+				showHelp();
+				return true;
 			case R.id.mnuNuclidesearch:
 				nuclideSearch(null);
 			default:  
@@ -243,6 +247,23 @@ public class MainActivity extends Activity
         builder.create();
         builder.show();
     }
+	
+	protected void showHelp() {
+        // Inflate the about message contents
+        View messageView = getLayoutInflater().inflate(R.layout.help, null, false);
+
+        // When linking text, force to always use default color. This works
+        // around a pressed color state bug.
+            
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.spectrum);
+        builder.setTitle(R.string.app_name);
+        builder.setView(messageView);
+        builder.create();
+        builder.show();
+    }
+	
+	
 	
 	private void calcFromTo(){
 		float energy = retnr(R.id.etEnergy);

@@ -6,4 +6,7 @@
 	android:title="@string/nucsearch"/>
 <item android:id="@+id/mnuAbout"
 	android:title="@string/about" />
+	<item android:id="@+id/mnuHelp"
+		android:title="@string/help" />
+	
 </menu>
