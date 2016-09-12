@@ -138,14 +138,15 @@ public class MainActivity extends Activity
 			}
 		});
 		dbNuclides=openOrCreateDatabase(DB_NAME,MODE_PRIVATE,null);
-		loadPref();
-		  }
-		private void loadPref(){
-		SharedPreferences shpref=PreferenceManager.getDefaultSharedPreferences(this);
-		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-			
-		
-		}
+		loadPref(this);
+	}
+		  
+		  
+		 
+	public void loadPref(Context ctx){
+		SharedPreferences shpref=PreferenceManager.getDefaultSharedPreferences(ctx);
+		PreferenceManager.setDefaultValues(ctx, R.xml.preferences, false);
+	}
 
 		@Override
 		public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)

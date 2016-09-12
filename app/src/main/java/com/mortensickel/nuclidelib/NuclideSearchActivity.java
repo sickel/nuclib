@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import android.text.*;
 import android.content.Intent;
 import java.util.regex.*;
+import android.widget.TextView.*;
 
+import android.view.inputmethod.*;
 
 public class NuclideSearchActivity extends Activity
 {
@@ -56,8 +58,25 @@ public class NuclideSearchActivity extends Activity
 			((TextView)findViewById(R.id.etMassnumber)).setText(n);
 			querynuclide(message);
 		}
+		OnEditorActionListener oeal=new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					nuclideSearchButton(v);
+					return true;
+				}
+				return false;
+			}};
+		EditText et=(EditText)findViewById(R.id.etElement);
+		et.setOnEditorActionListener(oeal);
+		et=(EditText)findViewById(R.id.etMassnumber);
+		et.setOnEditorActionListener(oeal);
 		
+		//MainActivity.loadPrefs(this);
 	}
+	
+	
+	
 	public void closeActivity(View v){
 		finish();
 	}
