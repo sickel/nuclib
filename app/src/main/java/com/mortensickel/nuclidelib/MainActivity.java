@@ -51,10 +51,10 @@ public class MainActivity extends Activity
 	// TODO: more info on nuclide
 	// DONE: framework for info. more info in db? using iaea app?
 	// DONE: half life cut off
-	// TODO: menu 
-	// TODO: user settable low prob value
-	// TODO: user settable rounding
-	// TODO: user settable default uncertainty
+	// DONE: menu 
+	// DONE: user settable low prob value
+	// DONE: user settable rounding
+	// DONE: user settable default uncertainty
 	// DONE: link to iaea web pages
 	
     @Override
@@ -199,12 +199,20 @@ public class MainActivity extends Activity
    
 	}
 
+//	
+//	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+//		Preference pref = sharedPreferences.   .findPreference(key);
+//  	
+//		if (pref instanceof ListPreference) {
+//			ListPreference listPref = (ListPreference) pref;
+//			pref.setSummary(listPref.getEntry());
+//		}
+//	}
+//	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		// TODO: Implement this method
 		super.onActivityResult(requestCode, resultCode, data);
-		//Toast.makeText(getApplicationContext(),"Back!",Toast.LENGTH_LONG).show();
 		readPrefs();
 	}  
 	
