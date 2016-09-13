@@ -30,6 +30,13 @@
 	<string name="appAbout">About text comes here...</string>
 	<string name="appCredit">Credits come here...</string>
 	<string name="versionText">Version: %s</string>
-	
+	<string name="rounding">Number of decimals</string>
+	<string name="defWidth">Default width</string>
+	<string name="appCopyright">(c) Morten Sickel 2016 licenced under GPL v2 or later</string>
+	<string name="appHelp"><p>Type in an energy in keV and an uncertainty in percent or keV (default 5percent) or type in an energy span directly. \n</p><br />
+		<p>Check "low probability" to search and display lines with low probability (default, p&lt;0.01).\n</p>
+		Type in a halflife to limit the search to nuclides with a longer half life.\n
+		Tap a nuclide in the search results to get more information.</string>
+	<string name="help">Help</string>
 </resources>
 	

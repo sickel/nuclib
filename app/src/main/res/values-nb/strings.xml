@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources> 
     <string name="app_name">Nuklidebibliotek</string>
     <string name="energy">Energi</string>
     <string name="lowprob">Lav sannsynlighet</string>
@@ -26,16 +26,17 @@
 	<string name="gammaLineProb">Gammaenergier i keV (sannsynlighet): </string>
 	<string name="nucsearch">Nuklidesøk</string>
 	<string name="backarrow">&lt;-</string>
-	<string name="about">About</string>
-	<string name="appAbout">Library on gamma energies. Searchable for an energy range or per nuclide. Source code available at https://github.com/sickel/nuclib</string>
-	<string name="appCredit">Decaydata from https://www.cpp.edu/~pbsiegel/bio431/genergies.html (pbsiegel) and https://www-nds.iaea.org/xgamma_standards/genergies1.htm (IAEA). When data have been available from both sources, IAEA data have been used.</string>
-	<string name="versionText">Version: %s</string>
-	<string name="rounding">Number of decimals</string>
-	<string name="defWidth">Default width</string>
-	<string name="appCopyright">(c) Morten Sickel 2016 licenced under GPL v2 or later</string>
-	<string name="appHelp"><p>Type in an energy in keV and an uncertainty in percent or keV (default 5percent) or type in an energy span directly. \n</p><br />
-		<p>Check "low probability" to search and display lines with low probability (default, p&lt;0.01).\n</p>
-Type in a halflife to limit the search to nuclides with a longer half life.\n
-Tap a nuclide in the search results to get more information.</string>
-	<string name="help">Help</string>
+	<string name="about">Om</string>
+	<string name="appAbout">Gammaenergibibliotek. Søk etter linjer i et energiområde eller informasjon om en nuklide. Kildekoden finnes på https://github.com/sickel/nuclib</string>
+	<string name="appCredit">Data fra https://www.cpp.edu/~pbsiegel/bio431/genergies.html (pbsiegel) og https://www-nds.iaea.org/xgamma_standards/genergies1.htm (IAEA). Der hvor data finnes fra begge kildenw, er IAEAdata brukt.</string>
+	<string name="versionText">Versjon: %s</string>
+	<string name="rounding">Antall desimaler</string>
+	<string name="defWidth">Standard søkebredde</string>
+	<string name="appCopyright">(c) Morten Sickel 2016 lisensiert under GPL v2 eller senere</string>
+	<string name="appHelp"><p>Skriv inn en energi i keV og en usikkerhet i prosent eller keV eller skriv inn et energiområde direkte.</p><br />\n\n
+		<p>Kryss av \"Lav sannsynlighet\" for å søke i og vise gammalinjer med lav sannsynlighet (standard, p&lt;0.01).</p><br />\n\n
+		<p>Skriv inn en halveringstid for å bare søke etter nuklider med lengere halveringstid.</p><br />\n\n
+		<p>Klikk en nuklide i resultatlisten for å få mer informasjon</p>
+		</string>
+	<string name="help">Hjelp</string>
 	</resources>
