@@ -27,8 +27,8 @@
 	<string name="nucsearch">Nuklidesøk</string>
 	<string name="backarrow">&lt;-</string>
 	<string name="about">Om</string>
-	<string name="appAbout">Gammaenergibibliotek. Søk etter linjer i et energiområde eller informasjon om en nuklide. Kildekoden finnes på https://github.com/sickel/nuclib</string>
-	<string name="appCredit">Data fra https://www.cpp.edu/~pbsiegel/bio431/genergies.html (pbsiegel) og https://www-nds.iaea.org/xgamma_standards/genergies1.htm (IAEA). Der hvor data finnes fra begge kildenw, er IAEAdata brukt.</string>
+	<string name="appAbout">Gammaenergibibliotek. Søk etter linjer i et energiområde eller informasjon om en nuklide.\n\nKildekoden finnes på https://github.com/sickel/nuclib</string>
+	<string name="appCredit">Data fra https://www.cpp.edu/~pbsiegel/bio431/genergies.html (pbsiegel) og https://www-nds.iaea.org/xgamma_standards/genergies1.htm (IAEA). Der hvor data finnes fra begge kildenr, er IAEAdata brukt.\n\nUtviklet i aide, https://play.google.com/store/apps/details?id=com.aide.ui</string>
 	<string name="versionText">Versjon: %s</string>
 	<string name="rounding">Antall desimaler</string>
 	<string name="defWidth">Standard søkebredde</string>

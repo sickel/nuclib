@@ -20,8 +20,8 @@
 	<string name="noDataFound">No data.found</string>
 	<string name="gammaLineProb">Gammaline (probability):</string>
 	<string name="about">About</string>
-	<string name="appAbout">About text comes here...</string>
-	<string name="appCredit">Credits come here...</string>
+	<string name="appAbout">Gamma energy library. Search for lines within an energy span or for information on a nuclide.\n\nSource code on https://github.com/sickel/nuclib</string>
+	<string name="appCredit">Data from https://www.cpp.edu/~pbsiegel/bio431/genergies.html (pbsiegel) and https://www-nds.iaea.org/xgamma_standards/genergies1.htm (IAEA). Where data are.available from both sources, IAEA data have been used.\n\nDeveloped in aide, https://play.google.com/store/apps/details?id=com.aide.ui.</string>
 	<string name="versionText">Version: %s</string>
 	<string name="rounding">Number of decimals</string>
 	<string name="defWidth">Default width</string>
